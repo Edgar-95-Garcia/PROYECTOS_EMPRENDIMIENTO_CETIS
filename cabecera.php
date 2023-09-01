@@ -85,13 +85,13 @@ if (!isset($GLOBALS['menu'])) {
                     <a class="nav-link" aling="center" href="./index.php">Inicio</a>
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
-                    <a class="nav-link" aling="center" href="./anunciaTec.php">Cursos</a>
+                    <a class="nav-link" aling="center" href="./#">Cursos</a>
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
-                    <a class="nav-link" aling="center" href="./anunciaTec.php">Prototipos</a>
+                    <a class="nav-link" aling="center" href="./#">Prototipos</a>
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
-                    <a class="nav-link" aling="center" href="./anunciaTec.php">Proyectos</a>
+                    <a class="nav-link" aling="center" href="./#">Proyectos</a>
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'ENTRAR') ? 'active' : ''; ?>">
                     <?php
@@ -138,7 +138,7 @@ if (!isset($GLOBALS['menu'])) {
                 ?>
                 <li>
                     <?php
-                    if (isset($_SESSION["user"]) || isset($_SESSION["admin_ecotec"])) {
+                    if (isset($_SESSION["user"]) || isset($_SESSION["admin_cetis"])) {
                         echo '<a class="nav-link" href="index.php?t=0">Cerrar sesión</a>';
                     }
                     ?>
