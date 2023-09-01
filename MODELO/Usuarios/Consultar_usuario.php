@@ -15,19 +15,6 @@ class Consultar_usuario
         return $result;
     }
 
-    function selectUserByIdReporte($ID)
-    {
-        try {
-            $result = "";
-            require_once("../Modelo/conect.php");
-            $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE ID_USUARIO = ?");
-            $stmt->execute(array($ID));
-            $result = $stmt->fetchAll();
-        } catch (PDOException $e) {
-        }
-        return $result;
-    }
 
     function selectUsersProfesor()
     {
@@ -35,21 +22,7 @@ class Consultar_usuario
             $result = "";
             require_once("./Modelo/conect.php");
             $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE LEVEL = 0 ");
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-        } catch (PDOException $e) {
-        }
-        return $result;
-    }
-
-    function selectUsersProfesorById($id_profesor)
-    {
-        try {
-            $result = "";
-            require_once("./Modelo/conect.php");
-            $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE LEVEL = 0 AND ID_USUARIO='" . $id_profesor . "'");
+            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 2");
             $stmt->execute();
             $result = $stmt->fetchAll();
         } catch (PDOException $e) {
@@ -63,7 +36,7 @@ class Consultar_usuario
             $result = "";
             require_once("./Modelo/conect.php");
             $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE LEVEL = 1 ");
+            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 1 ");
             $stmt->execute();
             $result = $stmt->fetchAll();
         } catch (PDOException $e) {
@@ -77,7 +50,7 @@ class Consultar_usuario
             $result = "";
             require_once("./Modelo/conect.php");
             $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE LEVEL = 3 ");
+            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 0 ");
             $stmt->execute();
             $result = $stmt->fetchAll();
         } catch (PDOException $e) {
@@ -99,53 +72,6 @@ class Consultar_usuario
         return $result;
     }
 
-    function selectUsers()
-    {
-        try {
-            $result = "";
-            require_once("./Modelo/conect.php");
-            $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios");
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-        } catch (PDOException $e) {
-            print "¡Error!: " . $e->getMessage() . "<br/>";
-        }
-        return $result;
-    }
-    function selectUser($MATRICULA, $HASH)
-    {
-        $coincidencia = 0;
-        try {
-            require_once("../Modelo/conect.php");
-            $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE HASH = ? AND MATRICULA = ?");
-            $stmt->execute(array($HASH, $MATRICULA));
-            foreach ($stmt as $v) {
-                $coincidencia++;
-            }
-        } catch (PDOException $e) {
-            print "¡Error!: " . $e->getMessage() . "<br/>";
-        }
-        return $coincidencia;
-    }
-    function selectUserCorreo($MATRICULA, $PASS)
-    {
-        $coincidencia = 0;
-        try {
-            require_once("../Modelo/conect.php");
-            $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE MATRICULA = ? AND PASS = ?");
-            $stmt->execute(array($HASH));
-            foreach ($stmt as $v) {
-                $coincidencia++;
-            }
-        } catch (PDOException $e) {
-            print "¡Error!: " . $e->getMessage() . "<br/>";
-        }
-        return $coincidencia;
-    }
-
     function selectNameUserName($MATRICULA)
     {
         try {
@@ -154,10 +80,10 @@ class Consultar_usuario
             include_once("./Controlador/key.php");
             $k = new key();
             $nombre = "";
-            $stmt = $c->connect()->prepare("SELECT NOMBRES FROM usuarios WHERE MATRICULA = ?");
+            $stmt = $c->connect()->prepare("SELECT NOMBRE FROM usuarios WHERE MATRICULA = ?");
             $stmt->execute(array(strval($k->enc($MATRICULA))));
             foreach ($stmt as $v) {
-                $nombre = $v['NOMBRES'];
+                $nombre = $v['NOMBRE'];
             }
         } catch (PDOException $e) {
             print "¡Error!: " . $e->getMessage() . "<br/>";
