@@ -122,8 +122,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
                         if (data.result == 1) {
                             Swal.fire('Alumno eliminado', '', 'success').then((result) => {
                                 if (result.isConfirmed) {
-                                    // Aquí puedes poner la URL a la que deseas redireccionar
-                                    location.replace("admon_alumnos.php");
+                                    location.reload();
                                 }
                             });
 

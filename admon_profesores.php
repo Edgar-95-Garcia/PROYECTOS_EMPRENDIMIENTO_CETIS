@@ -122,7 +122,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
                         if (reponse.result == 1) {
                             Swal.fire('Profesor eliminado', '', 'success').then((result) => {
                                 if (result.isConfirmed) {
-                                    location.replace("admon_profesores.php");
+                                    location.reload();
                                 }
                             });
                         } else {

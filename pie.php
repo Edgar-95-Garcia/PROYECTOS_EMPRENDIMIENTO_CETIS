@@ -28,7 +28,7 @@ if(isset($datos_apariencia) && $datos_apariencia != false){
             </a>
             <font size="3" face="Bodoni MT Black" color="#2C3E50 "><br>
                 Correo: </br>
-                <p> Dirección: Av Estanislao Ramírez Ruiz 301, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
+                <p> Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
                 <p>Pagina web: </br></p>
 
         </footer>

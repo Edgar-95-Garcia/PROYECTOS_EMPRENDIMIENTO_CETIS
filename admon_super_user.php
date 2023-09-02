@@ -122,8 +122,8 @@ if (isset($_SESSION["admin_cetis"]) == null) {
                         if (reponse.result == 1) {
                             Swal.fire('Administrador eliminado', '', 'success').then((result) => {
                                 if (result.isConfirmed) {
-                                    location.replace("admon_super_user.php.php");
-                                }
+                            location.reload();
+                            }
                             });
                         } else {
                             Swal.fire('Reintente más tarde', '', 'warning')
