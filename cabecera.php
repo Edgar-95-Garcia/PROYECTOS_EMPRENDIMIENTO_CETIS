@@ -42,6 +42,9 @@ if (!isset($GLOBALS['menu'])) {
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" />
 
     <!-- /-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- /-->
 </head>
 
 <body>
@@ -53,13 +56,13 @@ if (!isset($GLOBALS['menu'])) {
     $datos_apariencia = $obj_apariencia->selectApariencia();
     if (isset($datos_apariencia) && $datos_apariencia != false) {
         foreach ($datos_apariencia as $datos) {
-            if ($datos['TIPO'] == "lOaWBJSTUDhn") {
+            if ($datos['TIPO'] == "Q30FAqd/xMnj") {
                 $color_menu = $datos['VALOR'];
             }
-            if ($datos['TIPO'] == "lOaWBJSKUC5mfHT2Wnw=") {
+            if ($datos['TIPO'] == "Q30FAqdmxN/iR01oTwI=") {
                 $color_menu_texto = $datos['VALOR'];
             }
-            if ($datos['TIPO'] == "lOaWBJSYWjh2fGrmRGzkW7st") {
+            if ($datos['TIPO'] == "Q30FAqd0zsnyR1N4URJBajOO") {
                 $color_menu_fondo_superior = $datos['VALOR'];
             }
         }
@@ -84,14 +87,30 @@ if (!isset($GLOBALS['menu'])) {
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'index') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./index.php">Inicio</a>
                 </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'CURSOS') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./#">Cursos</a>
                 </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROTOTIPO') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./#">Prototipos</a>
                 </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
-                    <a class="nav-link" aling="center" href="./#">Proyectos</a>
+                <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Proyectos de emprendimiento
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <?php if (isset($_SESSION['user']) && isset($_SESSION['id'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
+                                ?>
+                            <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis proyectos</a>
+                            <?php
+                            } ?>                            
+                        <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php"> Explorar proyectos</a>
+                        <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
+                                ?>
+                            <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php"> Administrar etiquetas</a>
+                            <?php
+                            } ?>
+                    </div>
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'ENTRAR') ? 'active' : ''; ?>">
                     <?php
@@ -116,7 +135,7 @@ if (!isset($GLOBALS['menu'])) {
                             Administrar usuarios
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" aling="center" href="./admon_super_user.php">Administrar
+                            <a class="dropdown-item" aling="center" href="./admon_super_user.php">Administrar
                                 usuarios administrador</a>
                             <a class="dropdown-item" aling="center" href="./admon_profesores.php">Administrar
                                 profesores</a>
