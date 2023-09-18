@@ -20,6 +20,7 @@ class conect
         $this->conexion = null;
         $this->flag = false;
         $this->error_conexion = "Error en la conexion a MYSQL";
+        date_default_timezone_set("America/Mexico_City");
     }
     function __destruct()
     {

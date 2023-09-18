@@ -2,7 +2,7 @@
 
 class Insertar_proyecto
 {
-    function registro_usuario($data)
+    function registro_proyecto($data)
     {
         $temp = 0;
         try {

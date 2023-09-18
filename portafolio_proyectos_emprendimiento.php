@@ -55,7 +55,7 @@ $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
                                     <?php echo $contador; ?>
                                 </th>
                                 <td>
-                                    <?php echo $k->dec($nombre); ?>
+                                    <?php echo ($nombre); ?>
                                 </td>
                                 <td>
                                     <?php echo $k->dec($descripcion) ?>
@@ -176,7 +176,7 @@ include_once("./pie.php");
                 <p class="card-text">
                     <input type="hidden" name="id_profesor" id="id_profesor">
                     NOMBRE DEL PROYECTO<br><input id="nombre" name="nombre" type="text"> <br><br>
-                    DESCRIPCIÓN DEL PROYECTO<br><input id="descripcion" name="descripcion" type="text"> <br><br>
+                    DESCRIPCIÓN DEL PROYECTO<br><textarea id="descripcion" name="descripcion" cols="23" rows="5"></textarea><br><br>
             </div>
             <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
                 <button type="button" class="btn btn-primary" onclick="registrar_proyecto()">Aceptar</button>

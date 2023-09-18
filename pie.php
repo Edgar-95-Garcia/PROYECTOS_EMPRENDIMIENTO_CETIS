@@ -4,13 +4,13 @@ $k = new key();
 include_once("./Modelo/Apariencia/Consultar_apariencia.php");
 $obj_apariencia = new Consultar_apariencia();
 $datos_apariencia = $obj_apariencia->selectApariencia();
-if(isset($datos_apariencia) && $datos_apariencia != false){
+if (isset($datos_apariencia) && $datos_apariencia != false) {
     foreach ($datos_apariencia as $datos) {
         if ($datos['TIPO'] == "Q30FAqd0zsnyR0ljRxJBajOO") {
             $color_fondo_inferior = $datos['VALOR'];
         }
     }
-}else{
+} else {
     $color_fondo_inferior = $k->enc("#a8adad");
 }
 ?>
