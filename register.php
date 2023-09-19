@@ -1,10 +1,10 @@
 <?php
-$GLOBALS['menu'] = 'registro';
+$GLOBALS['menu'] = 'admon';
 
 if (!isset($_SESSION)) {
     session_start();
 }
-if (isset($_SESSION['user']) != null) {
+if (!isset($_SESSION["admin_cetis"])) {
     ?>
     <script>
         window.location.replace("index.php");
@@ -18,16 +18,16 @@ if (isset($_SESSION['user']) != null) {
         <div class="card-body">
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
                 <div class="card">
-                    <font size="6" face="Cooper Black" color="#3CA43C">
-                        <h5 class="card-header">REGISTRATE</h5>
+                    <font size="6" face="Cooper Black">
+                        <h5 class="card-header">REGISTRO DE USUARIOS</h5>
                     </font>
                     <div class="card-body">
-                        <font size="4" face="Constantia" color="#356425">
+                        <font size="4" face="Constantia">
                             <p class="card-text">
                                 NOMBRE (S)<br><br><input name="nombres" type="text"> <br><br>
                                 APELLIDO PATERNO <br><br><input name="paterno" type="text"> <br><br>
                                 APELLIDO MATERNO<br><br><input name="materno" type="text"> <br><br>
-                                SOY:<br>
+                                TIPO DE USUARIO:<br>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadio" id="flexRadio1" checked onclick="verificar()" value="1">
                                 <label class="form-check-label" for="flexRadio1">

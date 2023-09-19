@@ -19,7 +19,7 @@ if (isset($_SESSION['user']) != null) {
         <div class="card-body">
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
                 <div class="card">
-                    <font size="6" face="Cooper Black" color="#3CA43C">
+                    <font size="6" face="Cooper Black" color="#a70000">
                         <h5 class="card-header">INICIAR SESIÓN</h5>
                     </font>
                     <div class="card-body">

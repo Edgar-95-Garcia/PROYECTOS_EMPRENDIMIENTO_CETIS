@@ -12,6 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!isset($_SESSION['id'])){
         session_start();
     }
-    return $obj_proyectos->registro_proyecto(array(null, $_SESSION['id'], ($nombre), $k->enc($descripcion), $k->enc(date("Y-m-d H:i:s"))));
+    return $obj_proyectos->registro_proyecto(array(null, 0, ($nombre), $k->enc($descripcion), $k->enc(date("Y-m-d H:i:s"))));
 
 }

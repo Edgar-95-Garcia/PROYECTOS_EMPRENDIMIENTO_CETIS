@@ -14,8 +14,17 @@ include_once("./MODELO/Etiquetas_proyectos/Consultar_etiqueta_proyecto.php");
 $obj_etiquetas = new Consultar_etiqueta_proyecto();
 ?>
 <center>
-    <h3>PROYECTOS DE EMPRENDIMIENTO REGISTRADOS EN EL SISTEMA</h3>
     <br><br>
+    <h2>PROYECTOS DE EMPRENDIMIENTO REGISTRADOS EN EL SISTEMA </h2>
+    <hr class="red">
+    <br><br>
+    <?php
+    if (isset($_SESSION["admin_cetis"])) {
+        ?>
+        <center></center>
+        <?php
+    }
+    ?>
 
     <div class="form-row" style="width: 80%">
         <div class="form-group col-md-6">
@@ -44,8 +53,6 @@ $obj_etiquetas = new Consultar_etiqueta_proyecto();
     </div>
 </center>
 <br><br>
-<hr>
-<br><br>
 <div class="container" id="datos_busqueda" name="datos_busqueda"></div>
 <br><br>
 <?php
@@ -68,7 +75,7 @@ include_once("./pie.php");
         })
     });
     //----------------------------------------------------
-    $("#etiqueta_seleccionada").on("change", function () {        
+    $("#etiqueta_seleccionada").on("change", function () {
         modificar_informacion();
     });
 
@@ -78,7 +85,7 @@ include_once("./pie.php");
         nombre = $("#nombre_proyecto").val()
         var data = {
             nombre: nombre,
-            selectedValues:selectedValues,
+            selectedValues: selectedValues,
         };
         jQuery.ajax({
             url: "AJAX/proyectos/busqueda_proyecto_ajax.php",
@@ -102,5 +109,27 @@ include_once("./pie.php");
         grid-auto-flow: row;
         grid-template-areas:
             ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
     }
 </style>

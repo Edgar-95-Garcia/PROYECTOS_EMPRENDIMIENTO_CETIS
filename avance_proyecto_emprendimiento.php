@@ -4,7 +4,7 @@ $GLOBALS['menu'] = 'PROYECTOS';
 if (!isset($_SESSION)) {
     session_start();
 }
-if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
+if (isset($_GET['id'])) {
     $id_proyecto = $_GET['id'];
     include_once("./cabecera.php");
     //-------------------------------------
@@ -32,13 +32,15 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
     }
 
     ?>
+    <br><br>
     <center>
-        <h3>MODIFICACIÓN DE PROYECTO DE EMPRENDIMIENTO
-            <i>
+        <h2>AVANCE DE PROYECTO: <i>
                 <?php echo ($nombre_proyecto) ?>
-            </i>
-        </h3>
+            </i></h2>
     </center>
+    <hr class="red">
+    <br><br>
+
     <br><br>
     <div>
         <center>
@@ -75,8 +77,86 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                 </p>
                             </b>
                             <br><br>
-                            <button class="btn btn-primary" data-toggle="modal"
-                                data-target="#modal_modificacion_datos">Modificar estos datos</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                                aria-expanded="false" aria-controls="collapseTwo">
+                                BLOQUE I
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <center>
+                            <p>En este apartado puedes adjuntar todos los archivos que conformen tu proyecto, se recomienda
+                                que sean archivos en formato PDF, rar o zip</p>
+                        </center>
+                        <div class="card-body">
+                            <button class="btn btn-primary" onclick="subir_archivo()">Subir archivos</button>
+                            <br>
+                            <input class="invisible" type="file" name="upload_file" id="upload_file"
+                                accept=".zip,.rar,.pdf">
+                            <br>
+                            <?php
+                            $datos_archivos_proyecto = $obj_archivo_proyectos->selectFileProyectByID($id_proyecto);
+                            ?>
+                            <div class="" style="width: 50%">
+                                <table class="table table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">NOMBRE</th>
+                                            <th scope="col">FECHA MODIFICACIÓN</th>
+                                            <th scope="col">ACCIONES</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $contador = 0;
+                                        if (!empty($datos_archivos_proyecto)) {
+                                            foreach ($datos_archivos_proyecto as $archivo_proyecto) {
+                                                $contador++;
+                                                ?>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <?php echo $contador; ?>
+                                                    </th>
+                                                    <td>
+                                                        <?php echo $k->dec($archivo_proyecto['NOMBRE_ARCHIVO']) ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $k->dec($archivo_proyecto['FECHA_SUBIDA']) ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="#" style="width: 100%;" class="btn btn-primary" data-toggle="modal"
+                                                            data-target="#modal">Visualizar archivo</a>
+                                                        <br><br>
+                                                        <a href="./AJAX/archivos/descargar_archivo_ajax.php?id=<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>)"
+                                                            style="width: 100%;" class="btn btn-secondary">Descargar
+                                                            archivo</a>
+                                                        <br><br>
+                                                        <a href="#" style="width: 100%;" class="btn btn-danger">Eliminar
+                                                            archivo</a>
+                                                        <br><br>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        } else {
+                                            ?>
+                                            <tr>
+                                                <td colspan="4">No hay archivos registrados</td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,40 +165,18 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
                                 aria-expanded="false" aria-controls="collapseThree">
-                                ARCHIVOS ILUSTRATIVOS DEL PROYECTO
+                                BLOQUE II
                             </button>
                         </h5>
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <center>
-                            <p>En este apartado se pueden adjuntar archivos ilustrativos para que sea más llamativo, se
-                                recomienda adjuntar de 3 a 5 imágenes</p>
+                            <p>En este apartado puedes adjuntar todos los archivos ilustrativos de tu proyecto, se
+                                recomienda que sean imagenes o fotos</p>
                         </center>
                         <div class="card-body">
-                            <input class="invisible" type="file" name="upload_image" id="upload_image" accept="image/*">
-                            <br>
-                            <button class="btn btn-primary" onclick="presionar_input()">Subir fotos e imagenes</button>
-                        </div>
-                        <div class="card" style="width: 18rem;">
-                            <?php
-                            $datos_imagenes = $obj_imagen_proyectos->selectImageProyectByID($id_proyecto);
-                            if (!empty($datos_imagenes)) {
-                                foreach ($datos_imagenes as $imagen_datos) {
-                                    $id_imagen = $imagen_datos['ID_IMAGEN'];
-                                    $imagen = $imagen_datos['IMAGEN'];
-                                    $fecha_modificacion = $imagen_datos['FECHA_MODIFICACION'];
-                                    ?>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <img src="data:image/png;base64,<?php echo base64_encode($imagen)?>" width="100%">
-                                            <br>
-                                            <button class="btn btn-danger">Eliminar</button>
-                                        </li>
-                                    </ul>
-                                    <?php
-                                }
-                            }
-                            ?>
+                            <button class="btn btn-primary">Subir fotos e imagenes</button>
+
                         </div>
                     </div>
                 </div>
@@ -127,7 +185,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
                                 aria-expanded="false" aria-controls="collapseFour">
-                                ETIQUETAS
+                                BLOQUE III
                             </button>
                         </h5>
                     </div>
@@ -136,7 +194,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                             <button class="btn btn-primary">Seleccionar nueva etiqueta</button>
                         </div>
                         <center>
-                            <p>En este apartado puedes seleccionar todas las categorías o etiquetas para que el proyecto
+                            <p>En este apartado puedes seleccionar todas las categorías o etiquetas para que tu proyecto
                                 pueda ser facilmente localizado</p>
                         </center>
                         <div class="card" style="width: 18rem;">
@@ -190,6 +248,30 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
     <?php
 }
 ?>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_modificacion_datos">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificación de datos generales</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <p class="card-text">
+                    <input type="hidden" name="id_proyecto" id="id_proyecto" value="<?php echo $id_proyecto ?>">
+                    NOMBRE<br><input id="nombre" name="nombre" type="text" value="<?php echo ($nombre_proyecto) ?>">
+                    <br><br>
+                    <textarea name="descripcion" id="descripcion" cols="23"
+                        rows="5"><?php echo $k->dec($descripcion) ?></textarea><br><br>
+            </div>
+            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-primary"                    
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function subir_archivo() {
         $("#upload_file").click();
@@ -241,7 +323,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
             });
         }
     });
-
+    
     function descargar_archivo(id_archivo) {
         var data = {
             id_archivo: id_archivo,
@@ -259,119 +341,37 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
             }
         })
     }
-
-    function modificar_proyecto(id) {
-        nombre = $("#nombre").val();
-        descripcion = $("#descripcion").val();
-        var data = {
-            id: id,
-            nombre: nombre,
-            descripcion: descripcion,
-        };
-        jQuery.ajax({
-            url: "AJAX/proyectos/modificar_proyecto_ajax.php",
-            type: "POST",
-            data: data,
-            dataType: "json",
-            success: function (resultado) {
-                console.log(data);
-                if (resultado.result == 1) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Modificación exitosa',
-                        icon: 'success',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: 'No realizado, reintentar en unos minutos',
-                        icon: 'error',
-                    })
-                }
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        })
-    }
-    function presionar_input() {
-        $("#upload_image").click();
-    }
-
-    $("#upload_image").on("change", function () {
-        const selectedFile = this.files[0];
-        if (selectedFile) {
-            id = $("#id_proyecto").val();
-            // Obtener el nombre del archivo
-            const fileName = selectedFile.name;
-            // Creamos un objeto FormData para enviar el archivo
-            const formData = new FormData();
-            formData.append('archivo', selectedFile);
-            formData.append('id', id);
-            formData.append('nombre', fileName);
-            // Realizamos una llamada AJAX para enviar el archivo al servidor
-            $.ajax({
-                url: 'AJAX/archivos/registrar_imagen_ajax.php', // Ruta al archivo PHP que manejará la inserción en la base de datos
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                processData: false,  // Evita que jQuery procese los datos
-                contentType: false,  // Evita que jQuery configure el encabezado Content-Type
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            title: '¡Exito!',
-                            text: 'Archivo agregado',
-                            icon: 'success',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload();
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: '¡Error!',
-                            text: 'No realizado, reintentar en unos minutos',
-                            icon: 'error',
-                        })
-                    }
-
-                },
-                error: function (error) {
-                    // Manejar errores si ocurren
-                    console.error("Error!");
-                    console.log(JSON.stringify(error));
-                }
-            });
-        }
-    });
 </script>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_modificacion_datos">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modificación de datos generales</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align:center">
-                <p class="card-text">
-                    <input type="hidden" name="id_proyecto" id="id_proyecto" value="<?php echo $id_proyecto ?>">
-                    NOMBRE<br><input id="nombre" name="nombre" type="text" value="<?php echo ($nombre_proyecto) ?>">
-                    <br><br>
-                    <textarea name="descripcion" id="descripcion" cols="23"
-                        rows="5"><?php echo $k->dec($descripcion) ?></textarea><br><br>
-            </div>
-            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
-                <button type="button" class="btn btn-primary"
-                    onclick="modificar_proyecto('<?php echo $id_proyecto; ?>')">Modificar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 60px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+            ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
+    }
+</style>

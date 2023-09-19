@@ -67,14 +67,20 @@ if (!isset($GLOBALS['menu'])) {
             }
         }
     } else {
-        $color_menu = $k->enc("#a8adad");
-        $color_menu_texto = $k->enc("#a8adad");
-        $color_menu_fondo_superior = $k->enc("#a8adad");
+        $color_menu = $k->enc("#0f195d");
+        $color_menu_texto = $k->enc("#0f195d");
+        $color_menu_fondo_superior = $k->enc("#0f195d");
     }
 
     ?>
-    <div style="background-color: <?php echo $k->dec($color_menu_fondo_superior) ?>">
-        <center><img src="./Static/images/logo.jpg" width="400" height="150"></center>
+    <div style="background-color: <?php echo $k->dec($color_menu_fondo_superior) ?>">        
+    <br>
+        <center>
+            <img src="./Static/images/logo_dgeti.png" width="250" height="100" style="background-color:white;position:relative; left:40%">
+            
+            <img src="./Static/images/LOGO-SEP.png" width="250" height="100" style="background-color:white;position:relative; right:40%">
+        </center>
+        <br>
     </div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark" aling="center"
         style="background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Cooper Black">
@@ -108,6 +114,8 @@ if (!isset($GLOBALS['menu'])) {
                         <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
                                 ?>
                             <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php"> Administrar etiquetas</a>
+                            <a class="dropdown-item" aling="center" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>
+                            
                             <?php
                             } ?>
                     </div>
@@ -121,8 +129,8 @@ if (!isset($GLOBALS['menu'])) {
                 </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'registro') ? 'active' : ''; ?>">
                     <?php
-                    if (!isset($_SESSION["user"])) {
-                        echo '<a class="nav-link" href="./register.php">Registrarse</a>';
+                    if (isset($_SESSION['admin_cetis'])) {
+                        
                     }
                     ?>
                 </li>
@@ -135,6 +143,7 @@ if (!isset($GLOBALS['menu'])) {
                             Administrar usuarios
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" aling="center" href="./register.php">Registrar usuario</a>
                             <a class="dropdown-item" aling="center" href="./admon_super_user.php">Administrar
                                 usuarios administrador</a>
                             <a class="dropdown-item" aling="center" href="./admon_profesores.php">Administrar
@@ -142,16 +151,7 @@ if (!isset($GLOBALS['menu'])) {
                             <a class="dropdown-item" aling="center" href="./admon_alumnos.php">Administrar
                                 alumnos</a>
                         </div>
-                    </li>
-                    <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'prson') ? 'active' : ''; ?>">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"> Personalización
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" aling="center" href="">Apariencia de
-                                página (TO-DO)</a>
-                        </div>
-                    </li>
+                    </li>                    
                     <?php
                 }
                 ?>
@@ -173,3 +173,64 @@ if (!isset($GLOBALS['menu'])) {
             </ul>
         </div>
     </nav>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear nuevo proyecto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <p class="card-text">
+                    <input type="hidden" name="id_profesor" id="id_profesor">
+                    NOMBRE DEL PROYECTO<br><input id="nombre_registro" name="nombre_registro" type="text"> <br><br>
+                    DESCRIPCIÓN DEL PROYECTO<br><textarea id="descripcion_registro" name="descripcion_registro" cols="23"
+                        rows="5"></textarea><br><br>
+            </div>
+            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-primary" onclick="registrar_proyecto()">Aceptar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function registrar_proyecto() {
+        nombre = $("#nombre_registro").val();
+        descripcion = $("#descripcion_registro").val();
+        var data = {
+            nombre: nombre,
+            descripcion: descripcion,
+        };
+        jQuery.ajax({
+            url: "AJAX/proyectos/registrar_proyecto_ajax.php",
+            type: "POST",
+            data: data,
+            dataType: "json",
+            success: function (data) {
+                if (data.result == 1) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'Registro exitoso',
+                        icon: 'success',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: 'No realizado, reintentar en unos minutos',
+                        icon: 'error',
+                    })
+                }
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        })
+    }
+</script>

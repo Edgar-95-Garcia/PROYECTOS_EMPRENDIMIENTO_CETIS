@@ -14,17 +14,14 @@ include_once("./MODELO/Proyectos/Consultar_proyecto.php");
 $obj_proyectos = new Consultar_proyecto();
 $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
 ?>
-<center>
-    <h3>PROYECTOS DE EMPRENDIMIENTO REGISTRADOS EN EL SISTEMA</h3>
-</center>
 <br><br>
-<center><button class="btn btn-primary" data-toggle="modal" data-target="#modal">Crear nuevo proyecto</button></center>
+<center>
+    <h2>PROYECTOS DE EMPRENDIMIENTO EN LOS QUE ME REGISTRÉ</h2>
+</center>
+<hr class="red">
 <br><br>
 <div>
     <center>
-        <?php
-
-        ?>
         <div style="text-align: center;">
             <table class="table table-bordered table-hover table-responsive">
                 <thead>
@@ -64,11 +61,11 @@ $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
                                     <?php echo $k->dec($fecha_modificacion) ?>
                                 </td>
                                 <td>
-                                    <button class="btn btn-info" style="width: 100px;"
-                                        onclick="cambiar_datos('<?php echo $id; ?>','<?php echo $_SESSION['id']; ?>')">Modificar</button>
+                                    <button class="btn btn-info" style="width: 200px;"
+                                        onclick="cambiar_datos('<?php echo $id; ?>','<?php echo $_SESSION['id']; ?>')">Verificar Avance</button>
                                     <br><br>
-                                    <button class="btn btn-danger" style="width: 100px;"
-                                        onclick="conf_delete('<?php echo $id ?>')">Eliminar</button>
+                                    <!-- <button class="btn btn-danger" style="width: 200px;"
+                                        onclick="conf_delete('<?php echo $id ?>')">Eliminar</button> -->
                                 </td>
                             </tr>
                             <?php
@@ -94,45 +91,10 @@ include_once("./pie.php");
 ?>
 <script>
     function cambiar_datos(id, u) {
-        window.location.replace("editar_proyecto.php?id=" + id + "&u=" + u);
+        window.location.replace("avance_proyecto_emprendimiento.php?id=" + id + "&u=" + u);
     }
 
-    function registrar_proyecto() {
-        nombre = $("#nombre").val();
-        descripcion = $("#descripcion").val();
-        var data = {
-            nombre: nombre,
-            descripcion: descripcion,
-        };
-        jQuery.ajax({
-            url: "AJAX/proyectos/registrar_proyecto_ajax.php",
-            type: "POST",
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                if (data.result == 1) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Registro exitoso',
-                        icon: 'success',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: 'No realizado, reintentar en unos minutos',
-                        icon: 'error',
-                    })
-                }
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        })
-    }
+    
     function conf_delete(id) {
         Swal.fire({
             title: 'Confirmar eliminaciòn de proyecto y toda su información relacionada',
@@ -163,25 +125,36 @@ include_once("./pie.php");
         })
     }
 </script>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Crear nuevo proyecto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align:center">
-                <p class="card-text">
-                    <input type="hidden" name="id_profesor" id="id_profesor">
-                    NOMBRE DEL PROYECTO<br><input id="nombre" name="nombre" type="text"> <br><br>
-                    DESCRIPCIÓN DEL PROYECTO<br><textarea id="descripcion" name="descripcion" cols="23" rows="5"></textarea><br><br>
-            </div>
-            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
-                <button type="button" class="btn btn-primary" onclick="registrar_proyecto()">Aceptar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 60px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+            ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
+    }
+</style>

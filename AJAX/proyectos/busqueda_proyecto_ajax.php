@@ -16,22 +16,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : null;
     $etiquetas = isset($_POST['selectedValues']) ? $_POST['selectedValues'] : null;
 
-    if($nombre == null && $etiquetas == null){
+    if ($nombre == null && $etiquetas == null) {
         $datos = $obj_proyectos->selectAllProjects();
-    }else if($nombre != null && $etiquetas == null){
+    } else if ($nombre != null && $etiquetas == null) {
         $datos = $obj_proyectos->selectProjectbyName($nombre);
-    }else if($nombre == null && $etiquetas != null){
+    } else if ($nombre == null && $etiquetas != null) {
         $datos = $obj_proyectos->selectProjectbyTags($etiquetas);
-    }else if($nombre != null && $etiquetas != null){
+    } else if ($nombre != null && $etiquetas != null) {
         $datos = $obj_proyectos->selectProjectbyNameAndTag($nombre, $etiquetas);
     }
 
-    
-    
+
+
     if (!empty($datos)) {
         foreach ($datos as $proyecto) {
             $id_proyect = $proyecto['ID_PROYECTO'];
-            $imagenes_proyecto = $obj_imagen_proyectos->selectImageProyectByID($id_proyect);
+            $imagenes_proyecto = $obj_imagen_proyectos->selectImageProyectByIDAjax($id_proyect);
             if (empty($imagenes_proyecto)) {
                 $imagenes_proyecto_default = $obj_imagen_proyectos->selectDefaultImage();
                 foreach ($imagenes_proyecto_default as $imagen) {
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             ?>
             <div class="card" style="width: 80%;">
-                <img src="data:image/png;base64,<?php ?>">
+                <img src="Static/images/project-icon-29152.jpg">
                 <div class="card-body">
                     <h5 class="card-title">
                         <b>Titulo del proyecto</b><br>
@@ -78,12 +78,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php
                     } else {
                         ?>
-                        <a href="login.php" class="card-link">Iniciar sesión para obtener más información</a>
+                        <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión para obtener más información</a>
+                        <?php
+                    }
+                    ?>
+                    <br><br>
+                    <?php
+                    if (isset($_SESSION['admin_cetis'])) {
+                        ?>
+                        <a class="btn btn-secondary" href="editar_proyecto.php?id=<?php echo ($proyecto['ID_PROYECTO']); ?>" class="card-link" style="width:100%">Modificar información</a>
                         <?php
                     }
                     ?>
                 </div>
-            </div>            
+            </div>
             <?php
         }
     } else {

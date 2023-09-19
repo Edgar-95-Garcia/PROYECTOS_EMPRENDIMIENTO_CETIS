@@ -10,7 +10,7 @@ class Modificar_proyecto
             $k = new key();
             $coincidencia = 0;
             $fecha = date("Y-m-d H:i:s");
-            $stmt = $c->connect()->prepare("UPDATE proyectos SET NOMBRE_PROYECTO = '" . $k->enc($nombre) . "' , FECHA_MODIFICACION = '" . $k->enc($fecha) . "', DESCRIPCION = '" . $k->enc($descripcion) . "'  WHERE ID_PROYECTO = '" . $id_proyecto . "'");
+            $stmt = $c->connect()->prepare("UPDATE proyectos SET NOMBRE_PROYECTO = '" . ($nombre) . "' , FECHA_MODIFICACION = '" . $k->enc($fecha) . "', DESCRIPCION = '" . $k->enc($descripcion) . "'  WHERE ID_PROYECTO = '" . $id_proyecto . "'");
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
                 $coincidencia = 1;
