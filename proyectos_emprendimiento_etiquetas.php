@@ -19,7 +19,10 @@ if (isset($_SESSION["admin_cetis"]) == null) {
     $datos_etiquetas = $obj_etiquetas->selectAllTags();
     ?>
     <center>
-        <h3>ETIQUETAS PARA PROYECTOS DE EMPRENDIMIENTO REGISTRADAS EN EL SISTEMA</h3>
+        <br><br>
+        <h2>ETIQUETAS PARA PROYECTOS DE EMPRENDIMIENTO REGISTRADAS EN EL SISTEMA</h2>
+        <hr class="red">
+        <br><br>
     </center>
     <br><br>
     <center><button data-toggle="modal" data-target="#modal" class="btn btn-primary">Agregar nueva etiqueta</button>
@@ -175,3 +178,36 @@ include_once("./pie.php");
         </div>
     </div>
 </div>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 60px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+            ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
+    }
+</style>

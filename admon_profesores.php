@@ -18,8 +18,12 @@ if (isset($_SESSION["admin_cetis"]) == null) {
     $obj_profesores = new Consultar_usuario();
     $datos_profesores = $obj_profesores->selectUsersProfesor();
     ?>
-    <center><h3>PROFESORES REGISTRADOS EN EL SISTEMA</h3></center>
-    <br><br>
+    <center>
+        <br><br>
+        <h2>PROFESORES REGISTRADOS EN EL SISTEMA</h2>
+        <hr class="red">
+        <br><br>
+    </center>
     <div style="text-align: center;">
         <table class="table table-bordered table-hover table-responsive">
             <thead>
@@ -264,3 +268,36 @@ if (isset($_SESSION["admin_cetis"]) == null) {
         </div>
     </div>
 </div>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 60px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+            ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
+    }
+</style>

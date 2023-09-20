@@ -90,12 +90,16 @@ if (isset($_GET['id'])) {
                         </h5>
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <br><br>
                         <center>
-                            <p>En este apartado puedes adjuntar todos los archivos que conformen tu proyecto, se recomienda
-                                que sean archivos en formato PDF, rar o zip</p>
+                            <p>Es la presentación sintética y concisa del informe de investigación, la cual explica la
+                                descripción del problema, el alcance, las limitaciones, la metodología o procedimientos que
+                                se utilizarán, pero sin adelantar resultados ni llegar a concluir, asimismo, pueden citarse
+                                agradecimientos institucionales. (Se deberá limitar a una cuartilla).</p>
                         </center>
                         <div class="card-body">
-                            <button class="btn btn-primary" onclick="subir_archivo()">Subir archivos</button>
+                            <button class="btn btn-primary" onclick="subir_archivo()">Subir archivos para este
+                                bloque</button>
                             <br>
                             <input class="invisible" type="file" name="upload_file" id="upload_file"
                                 accept=".zip,.rar,.pdf">
@@ -133,7 +137,7 @@ if (isset($_GET['id'])) {
 
                                                     <td>
                                                         <a href="#" style="width: 100%;" class="btn btn-primary" data-toggle="modal"
-                                                            data-target="#modal">Visualizar archivo</a>
+                                                            data-target="#modal_visualizacion">Visualizar archivo</a>
                                                         <br><br>
                                                         <a href="./AJAX/archivos/descargar_archivo_ajax.php?id=<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>)"
                                                             style="width: 100%;" class="btn btn-secondary">Descargar
@@ -156,6 +160,30 @@ if (isset($_GET['id'])) {
                                         ?>
                                     </tbody>
                                 </table>
+                                <hr>
+                                <table class="table table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Calificación profesor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Aún no se ha calificado este bloque</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <table class="table table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Retroalimentación/Comentarios de profesor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Sin comentarios</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -171,12 +199,10 @@ if (isset($_GET['id'])) {
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <center>
-                            <p>En este apartado puedes adjuntar todos los archivos ilustrativos de tu proyecto, se
-                                recomienda que sean imagenes o fotos</p>
+
                         </center>
                         <div class="card-body">
-                            <button class="btn btn-primary">Subir fotos e imagenes</button>
-
+                            <p>BLOQUEADO HASTA FINALIZAR BLOQUE ANTERIOR</p>
                         </div>
                     </div>
                 </div>
@@ -190,42 +216,11 @@ if (isset($_GET['id'])) {
                         </h5>
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                        <div class="card-body">
-                            <button class="btn btn-primary">Seleccionar nueva etiqueta</button>
-                        </div>
+                        
                         <center>
-                            <p>En este apartado puedes seleccionar todas las categorías o etiquetas para que tu proyecto
-                                pueda ser facilmente localizado</p>
                         </center>
-                        <div class="card" style="width: 18rem;">
-                            <?php
-                            $etiquetas_seleccionadas = $obj_etiqueta_proyectos->selectAllTagsProjectNoAjax($id_proyecto);
-                            if (!empty($etiquetas_seleccionadas)) {
-                                foreach ($etiquetas_seleccionadas as $etiqueta_seleccionada) {
-                                    $etiqueta_individual = $etiqueta_seleccionada['ID_ETIQUETA'];
-                                    $informacion_etiqueta = $obj_etiqueta_proyectos->selectTagByIdNoAjax($etiqueta_individual);
-                                    foreach ($informacion_etiqueta as $etiqueta) {
-                                        ?>
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">
-                                                <?php echo $k->dec($etiqueta['NOMBRE']) ?>
-                                                <br>
-                                                <button class="btn btn-danger">Eliminar</button>
-                                            </li>
-                                        </ul>
-                                        <?php
-                                    }
-
-                                }
-
-                            } else {
-                                ?>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">No hay etiquetas relacionadas</li>
-                                </ul>
-                                <?php
-                            }
-                            ?>
+                        <div class="card-body">
+                            <p>BLOQUEADO HASTA FINALIZAR BLOQUE ANTERIOR</p>
                         </div>
 
                     </div>
@@ -248,26 +243,22 @@ if (isset($_GET['id'])) {
     <?php
 }
 ?>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_modificacion_datos">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_visualizacion">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modificación de datos generales</h5>
+                <h5 class="modal-title">Visualización de archivo PDF</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" style="text-align:center">
                 <p class="card-text">
-                    <input type="hidden" name="id_proyecto" id="id_proyecto" value="<?php echo $id_proyecto ?>">
-                    NOMBRE<br><input id="nombre" name="nombre" type="text" value="<?php echo ($nombre_proyecto) ?>">
-                    <br><br>
-                    <textarea name="descripcion" id="descripcion" cols="23"
-                        rows="5"><?php echo $k->dec($descripcion) ?></textarea><br><br>
+                    En construcción...
+                    </pp>
             </div>
             <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
-                <button type="button" class="btn btn-primary"                    
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -323,7 +314,7 @@ if (isset($_GET['id'])) {
             });
         }
     });
-    
+
     function descargar_archivo(id_archivo) {
         var data = {
             id_archivo: id_archivo,

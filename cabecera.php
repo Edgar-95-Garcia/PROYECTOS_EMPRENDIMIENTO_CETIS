@@ -83,13 +83,16 @@ if (!isset($GLOBALS['menu'])) {
         <br>
     </div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark" aling="center"
-        style="background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Cooper Black">
+        style="padding:0px 0px 0px 300px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px; float:inline-end;margin-left:0%">
         <a class="navbar-brand" href="./index.php"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#colNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="colNav">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aling="center" href="http://www.dgeti.sep.gob.mx/">DGETI</a>
+                </li>
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'index') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./index.php">Inicio</a>
                 </li>
