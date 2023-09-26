@@ -5,7 +5,7 @@ class Consultar_usuario
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE ID_USUARIO = ?");
             $stmt->execute(array($ID));
@@ -20,7 +20,7 @@ class Consultar_usuario
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 2");
             $stmt->execute();
@@ -34,7 +34,7 @@ class Consultar_usuario
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 1 ");
             $stmt->execute();
@@ -48,7 +48,7 @@ class Consultar_usuario
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE TIPO = 0 ");
             $stmt->execute();
@@ -62,7 +62,7 @@ class Consultar_usuario
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE MATRICULA = '" . $MATRICULA . "'");
             $stmt->execute();
@@ -75,9 +75,9 @@ class Consultar_usuario
     function selectNameUserName($MATRICULA)
     {
         try {
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
-            include_once("./Controlador/key.php");
+            include_once("./CONTROLADOR/key.php");
             $k = new key();
             $nombre = "";
             $stmt = $c->connect()->prepare("SELECT NOMBRE FROM usuarios WHERE MATRICULA = ?");
@@ -95,9 +95,9 @@ class Consultar_usuario
     {
         $coincidencia = 0;
         try {
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
-            include_once("./Controlador/key.php");
+            include_once("./CONTROLADOR/key.php");
             $k = new key();
             $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE MATRICULA = ? OR CORREO = ? AND PASS = ?");
             $stmt->execute(array(strval($k->enc($MATRICULA)), $k->enc($MATRICULA), strval($k->enc($PASS))));
@@ -141,9 +141,9 @@ class Consultar_usuario
     function selectUserIDFromCorreo($MATRICULA)
     {
         try {
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
-            include_once("./Controlador/key.php");
+            include_once("./CONTROLADOR/key.php");
             $k = new key();
             $nombre = "";
             $stmt = $c->connect()->prepare("SELECT ID_USUARIO FROM usuarios WHERE MATRICULA = ?");

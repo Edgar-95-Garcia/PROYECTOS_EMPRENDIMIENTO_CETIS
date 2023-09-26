@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $id_proyecto = $_GET['id'];
     include_once("./cabecera.php");
     //-------------------------------------
-    include_once("./Controlador/key.php");
+    include_once("./CONTROLADOR/key.php");
     $k = new key();
     //-------------------------------------
     include_once("./MODELO/Archivos_proyecto/Consultar_archivo_proyecto.php");

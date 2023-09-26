@@ -1,6 +1,6 @@
 <?php
 
-include_once("./Controlador/key.php");
+include_once("./CONTROLADOR/key.php");
 $k = new key();
 ?>
 <!DOCTYPE html>

@@ -4,7 +4,7 @@ class Borrar_proyecto
     function deleteUsuarioFromId($id_proyecto)
     {
         try {            
-            include_once("../../Modelo/conect.php");
+            include_once("../../MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("DELETE FROM proyectos WHERE ID_PROYECTO = '" . $id_proyecto . "'");
             if ($stmt->execute())

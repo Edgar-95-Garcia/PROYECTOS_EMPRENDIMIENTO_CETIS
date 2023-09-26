@@ -12,7 +12,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
     <?php
 } else {
     include_once("./cabecera.php");
-    include_once("./Controlador/key.php");
+    include_once("./CONTROLADOR/key.php");
     $k = new key();
     include_once("./MODELO/Etiquetas_proyectos/Consultar_etiqueta_proyecto.php");
     $obj_etiquetas = new Consultar_etiqueta_proyecto();

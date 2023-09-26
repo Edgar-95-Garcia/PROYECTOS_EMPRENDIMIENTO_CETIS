@@ -8,7 +8,7 @@ class Insertar_proyecto
         try {
             include_once("../../CONTROLADOR/key.php");
             $k = new key();
-            include_once("../../Modelo/conect.php");
+            include_once("../../MODELO/conect.php");
             $mysql_object = new conect();
 
             $statementHandle = $mysql_object->connect()->prepare("INSERT INTO proyectos(ID_PROYECTO,ID_USUARIO,NOMBRE_PROYECTO, DESCRIPCION, FECHA_MODIFICACION) VALUES (?,?,?,?,?)");

@@ -76,14 +76,14 @@ if (!isset($GLOBALS['menu'])) {
     <div style="background-color: <?php echo $k->dec($color_menu_fondo_superior) ?>">        
     <br>
         <center>
-            <img src="./Static/images/logo_dgeti.png" width="250" height="100" style="background-color:white;position:relative; left:40%">
+            <img src="./Static/images/logo_dgeti.png" width="200" height="70px" style="background-color:white;position:relative; left:40%">
             
-            <img src="./Static/images/LOGO-SEP.png" width="250" height="100" style="background-color:white;position:relative; right:40%">
+            <img src="./Static/images/LOGO-SEP.png" width="200" height="70" style="background-color:white;position:relative; right:40%">
         </center>
         <br>
     </div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark" aling="center"
-        style="padding:0px 0px 0px 300px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px; float:inline-end;margin-left:0%">
+        style="padding:0px 0px 0px 200px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px; float:inline-end;margin-left:0%">
         <a class="navbar-brand" href="./index.php"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#colNav">
             <span class="navbar-toggler-icon"></span>

@@ -4,7 +4,7 @@ class Borrar_imagen_proyecto
     function deleteUsuarioFromIdUsuario($id_usuario)
     {
         try {            
-            include_once("../../Modelo/conect.php");
+            include_once("../../MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("DELETE FROM usuarios WHERE ID_USUARIO = '" . $id_usuario . "'");
             if ($stmt->execute())

@@ -5,7 +5,7 @@ class Consultar_inicio
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM info_inicio WHERE TITULO != '" . $titulo . "' AND TEXTO != '" . $texto . "'");
             $stmt->execute();
@@ -20,7 +20,7 @@ class Consultar_inicio
     {
         try {
             $result = "";
-            require_once("./Modelo/conect.php");
+            require_once("./MODELO/conect.php");
             $c = new conect();
             $stmt = $c->connect()->prepare("SELECT * FROM info_inicio WHERE TITULO='" . $titulo . "' AND TEXTO= '" . $texto . "'");
             $stmt->execute();

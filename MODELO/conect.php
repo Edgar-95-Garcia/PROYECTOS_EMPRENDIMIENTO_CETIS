@@ -12,11 +12,11 @@ class conect
     function __construct()
     {
         #$this->user = "cetis_admin";
-        $this->user = "root";
+        $this->user = "proye539_admin";
         #$this->pass = "Cetis@23-/-";
-        $this->pass = "";
-        #$this->server = "mysql:host=mx14.hostgator.mx;dbname=cetis_emprendimiento";
-        $this->server = "mysql:host=localhost;dbname=cetis_emprendimiento";
+        $this->pass = "2&Z8D5^ad82#";
+        $this->server = "mysql:host=mx74.hostgator.mx;dbname=proye539_cetis_emprendimiento";
+        #$this->server = "mysql:host=localhost;dbname=cetis_emprendimiento";
         $this->conexion = null;
         $this->flag = false;
         $this->error_conexion = "Error en la conexion a MYSQL";

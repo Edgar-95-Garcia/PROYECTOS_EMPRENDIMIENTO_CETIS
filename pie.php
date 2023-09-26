@@ -1,7 +1,7 @@
 <?php
-include_once("./Controlador/key.php");
+include_once("./CONTROLADOR/key.php");
 $k = new key();
-include_once("./Modelo/Apariencia/Consultar_apariencia.php");
+include_once("./MODELO/Apariencia/Consultar_apariencia.php");
 $obj_apariencia = new Consultar_apariencia();
 $datos_apariencia = $obj_apariencia->selectApariencia();
 if (isset($datos_apariencia) && $datos_apariencia != false) {
@@ -26,11 +26,10 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
             <a href="">
                 <center><img src="./Static/images/insta.png" align='center' width="100" height="100"></center>
             </a> -->
-            <font size="3" face="Bodoni MT Black" color="#FFFFF"><br>
-                Correo: </br>
-                <p> Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
-                <p>Pagina web: </br></p>
-
+            <font size="3" face="Bodoni MT Black" color="#FFFFF">
+                <p>Correo: </p>
+                <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
+                <p>Pagina web:</p>
         </footer>
     </center>
 </font>

@@ -5,7 +5,7 @@ class Insertar_usuario
 
     function addUser($nombres, $a_p, $a_m, $campo_dinamico, $pass, $tipo_usuario)
     {
-        include_once("./Controlador/key.php");
+        include_once("./CONTROLADOR/key.php");
         $k = new key();
         $fecha = date("Y-m-d H:i:s");
         $temp = 0;
@@ -21,7 +21,7 @@ class Insertar_usuario
         try {
             include_once("./CONTROLADOR/key.php");
             $k = new key();
-            include_once("./Modelo/conect.php");
+            include_once("./MODELO/conect.php");
             $mysql_object = new conect();
             #checar que no existan correos o matriculas duplicadas
             if ($data[7] == $k->enc("1")) {#Correo

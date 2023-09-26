@@ -46,9 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         #se verifica que todos los datos hayan sido ingresados correctamente y por lo tanto que la bandera sea TRUE
         if ($flag == true) {
-            include_once("./Modelo/conect.php");
+            include_once("./MODELO/conect.php");
             $mysql_object = new conect();
-            include_once("./Modelo/Usuarios/Insertar_usuario.php");
+            include_once("./MODELO/Usuarios/Insertar_usuario.php");
             $insertar = new Insertar_usuario();
             $a = $insertar->addUser($nombres, $apellido_paterno, $apellido_materno, $campo_dinamico, $pass, $tipo_usuario);
             if ($a == 1) {

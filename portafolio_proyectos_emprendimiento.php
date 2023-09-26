@@ -6,7 +6,7 @@ if (!isset($_SESSION)) {
 }
 
 include_once("./cabecera.php");
-include_once("./Controlador/key.php");
+include_once("./CONTROLADOR/key.php");
 $k = new key();
 include_once("./MODELO/Imagen_proyectos/Consultar_imagen_proyecto.php");
 $obj_imagen_proyectos = new Consultar_imagen_proyecto();

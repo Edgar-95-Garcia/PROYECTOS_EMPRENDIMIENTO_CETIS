@@ -4,9 +4,9 @@ class Modificar_apariencia
     function updateColorMenu($value, $tipo)
     {
         try {
-            include_once("./Modelo/conect.php");
+            include_once("./MODELO/conect.php");
             $c = new conect();
-            include_once("./Controlador/key.php");
+            include_once("./CONTROLADOR/key.php");
             $k = new key();
             $coincidencia = 0;
             $stmt = $c->connect()->prepare("UPDATE config SET VALOR = '" . $k->enc($value) . "' WHERE TIPO = '" . $k->enc($tipo) . "'");

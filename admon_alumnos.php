@@ -12,9 +12,9 @@ if (isset($_SESSION["admin_cetis"]) == null) {
     <?php
 } else {
     include_once("./cabecera.php");
-    include_once("./Controlador/key.php");
+    include_once("./CONTROLADOR/key.php");
     $k = new key();
-    include_once("./Modelo/Usuarios/Consultar_usuario.php");
+    include_once("./MODELO/Usuarios/Consultar_usuario.php");
     $obj_alumnos = new Consultar_usuario();
     $datos_profesores = $obj_alumnos->selectUsersAlumno();
     ?>
