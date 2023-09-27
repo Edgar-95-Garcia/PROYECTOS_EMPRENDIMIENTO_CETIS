@@ -14,10 +14,11 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
     $color_fondo_inferior = $k->enc("#a8adad");
 }
 ?>
-<font color="Black" face="arial" size="4">
+</body>
+<footer
+    style="background-color: <?php echo $k->dec($color_fondo_inferior) ?>; font-size:large;font-family:Montserrat Black; font-size:19px;color:white">
     <center>
-        <footer style="background-color: <?php echo $k->dec($color_fondo_inferior) ?>;">
-            <!-- <a href="">
+        <!-- <a href="">
                 <center><img src="./Static/images/face.png" align='right' width="100" height="100"></center>
             </a>
             <a href="">
@@ -26,11 +27,8 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
             <a href="">
                 <center><img src="./Static/images/insta.png" align='center' width="100" height="100"></center>
             </a> -->
-            <font size="3" face="Bodoni MT Black" color="#FFFFF">
-                <p>Correo: </p>
-                <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
-                <p>Pagina web:</p>
-        </footer>
+        <p>Correo: </p>
+        <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
+        <p>Pagina web:</p>
     </center>
-</font>
-</body>
+</footer>

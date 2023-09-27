@@ -33,11 +33,15 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
 
     ?>
     <center>
-        <h3>MODIFICACIÓN DE PROYECTO DE EMPRENDIMIENTO
+        <br><br>
+        <h2>MODIFICACIÓN DE PROYECTO DE EMPRENDIMIENTO
             <i>
                 <?php echo ($nombre_proyecto) ?>
             </i>
-        </h3>
+        </h2>
+        <hr class="red">
+        <br><br>
+
     </center>
     <br><br>
     <div>
@@ -110,7 +114,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                     ?>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
-                                            <img src="data:image/png;base64,<?php echo base64_encode($imagen)?>" width="100%">
+                                            <img src="data:image/png;base64,<?php echo base64_encode($imagen) ?>" width="100%">
                                             <br>
                                             <button class="btn btn-danger">Eliminar</button>
                                         </li>
@@ -150,8 +154,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                         ?>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                                <?php echo $k->dec($etiqueta['NOMBRE']) ?>
-                                                <br>
+                                                <?php echo $k->dec($etiqueta['NOMBRE']) ?>                                                
                                                 <button class="btn btn-danger">Eliminar</button>
                                             </li>
                                         </ul>
@@ -375,3 +378,36 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
         </div>
     </div>
 </div>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 60px 0px;
+        grid-auto-flow: row;
+        grid-template-areas:
+            ". . .";
+    }
+
+    .red {
+        margin: 10px 0 70px;
+        border-top-color: #7e9d9d;
+        display: block;
+        unicode-bidi: isolate;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        overflow: hidden;
+        width: 70%;
+    }
+
+    hr.red::before {
+        content: " ";
+        width: 35px;
+        height: 5px;
+        background-color: #b38e5d;
+        display: block;
+        position: absolute;
+    }
+</style>
