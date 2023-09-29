@@ -42,7 +42,8 @@ $obj_etiquetas = new Consultar_etiqueta_proyecto();
                     foreach ($todas_etiquetas as $etiquetas_individuales) {
                         $nombre_etiqueta = $k->dec($etiquetas_individuales['NOMBRE']);
                         ?>
-                        <option value="<?php echo $etiquetas_individuales['ID_ETIQUETA'] ?>"><?php echo $nombre_etiqueta ?>
+                        <option value="<?php echo $etiquetas_individuales['ID_ETIQUETA'] ?>">
+                            <?php echo $nombre_etiqueta ?>
                         </option>
                         <?php
                     }
@@ -78,6 +79,7 @@ include_once("./pie.php");
     $("#etiqueta_seleccionada").on("change", function () {
         modificar_informacion();
     });
+    //----------------------------------------------------
 
     function modificar_informacion() {
         var selectedValues = $("#etiqueta_seleccionada").val();

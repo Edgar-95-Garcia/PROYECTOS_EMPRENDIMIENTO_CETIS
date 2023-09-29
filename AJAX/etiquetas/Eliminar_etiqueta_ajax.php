@@ -8,6 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $c->connect()->prepare("DELETE FROM etiquetas WHERE ID_ETIQUETA = '" . $id . "'");
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
+            $stmt = $c->connect()->prepare("DELETE FROM etiqueta_has_proyecto WHERE ID_ETIQUETA = '" . $id . "'");
+            $stmt->execute();
             echo 1;
         } else {
             echo 0;

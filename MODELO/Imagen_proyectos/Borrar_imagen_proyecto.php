@@ -1,12 +1,12 @@
 <?php
 class Borrar_imagen_proyecto
 {
-    function deleteUsuarioFromIdUsuario($id_usuario)
+    function deleteImageAjax($id_imagen)
     {
         try {            
             include_once("../../MODELO/conect.php");
             $c = new conect();
-            $stmt = $c->connect()->prepare("DELETE FROM usuarios WHERE ID_USUARIO = '" . $id_usuario . "'");
+            $stmt = $c->connect()->prepare("DELETE FROM imagen_proyectos WHERE ID_IMAGEN = '" . $id_imagen . "'");
             if ($stmt->execute())
                 echo json_encode(array('result' => 1));
             else

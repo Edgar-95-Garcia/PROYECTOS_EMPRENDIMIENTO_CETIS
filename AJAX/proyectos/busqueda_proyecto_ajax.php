@@ -40,7 +40,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             ?>
             <div class="card" style="width: 80%;">
-                <img src="Static/images/project-icon-29152.jpg">
+                <?php
+                $datos_imagenes_proyectos = $obj_imagen_proyectos->selectImageProyectByIDAjax($id_proyect);
+                if (!empty($datos_imagenes_proyectos)) {
+                    $id_carousel = rand(0,999);//Se genera un identificador único para cada carrusel 
+                    ?>
+                    <!--  -->
+                    <div class="carousel-container" style="max-width:300px; max-height:300px">
+                        <div id="carouselControls_<?php echo $id_carousel; ?>" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <?php
+                                $auxiliar = 0;
+                                foreach ($datos_imagenes_proyectos as $datos) {
+                                    ?>
+                                    <div class="carousel-item <?php echo ($auxiliar == 0) ? 'active' : '' ?>"
+                                        id="<?php echo 'id_' . $auxiliar ?>">
+                                        <!-- Identificador único para cada item del carrusel -->
+                                        <img src="data:image/png;base64,<?php echo base64_encode($datos['IMAGEN']) ?>"
+                                            style="max-width:300px; max-height:300px">
+                                    </div>
+                                    <?php
+                                    $auxiliar++;
+                                }
+                                ?>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselControls_<?php echo $id_carousel; ?>" role="button" data-slide="prev"
+                                id="click_<?php echo $auxiliar ?>">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselControls_<?php echo $id_carousel; ?>" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    <script>
+                        $('#carouselControls_<?php echo $id_carousel; ?>').carousel();
+                    </script>
+                    <!--  -->
+                    <?php
+                } else {
+                    ?>
+                    <img src="Static/images/project-icon-29152.jpg">
+                    <?php
+                }
+                ?>
                 <div class="card-body">
                     <h5 class="card-title">
                         <b>Titulo del proyecto</b><br>
@@ -78,7 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php
                     } else {
                         ?>
-                        <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión para obtener más información</a>
+                        <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión para obtener más
+                            información</a>
                         <?php
                     }
                     ?>
@@ -86,7 +132,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php
                     if (isset($_SESSION['admin_cetis'])) {
                         ?>
-                        <a class="btn btn-secondary" href="editar_proyecto.php?id=<?php echo ($proyecto['ID_PROYECTO']); ?>" class="card-link" style="width:100%">Modificar información</a>
+                        <a class="btn btn-secondary" href="editar_proyecto.php?id=<?php echo ($proyecto['ID_PROYECTO']); ?>"
+                            class="card-link" style="width:100%">Modificar información</a>
                         <?php
                     }
                     ?>
@@ -103,4 +150,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 }
-?>

@@ -95,8 +95,10 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <center>
-                            <p>En este apartado se pueden adjuntar archivos ilustrativos para que sea más llamativo, se
-                                recomienda adjuntar de 3 a 5 imágenes</p>
+                            <p>En este apartado se pueden adjuntar archivos ilustrativos para que el proyecto sea más
+                                llamativo</p>
+                            <p>Se recomienda adjuntar de 3 a 5 imágenes</p>
+                            <p>Se recomienda que cada imágen pese menos de 1 MB</p>
                         </center>
                         <div class="card-body">
                             <input class="invisible" type="file" name="upload_image" id="upload_image" accept="image/*">
@@ -116,7 +118,8 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                         <li class="list-group-item">
                                             <img src="data:image/png;base64,<?php echo base64_encode($imagen) ?>" width="100%">
                                             <br>
-                                            <button class="btn btn-danger">Eliminar</button>
+                                            <button class="btn btn-danger"
+                                                onclick="confirmar_eliminar(<?php echo $id_imagen ?>)">Eliminar</button>
                                         </li>
                                     </ul>
                                     <?php
@@ -137,7 +140,9 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-primary">Seleccionar nueva etiqueta</button>
+                            <button class="btn btn-primary"
+                                onclick="seleccionar_nueva_etiqueta('<?php echo $id_proyecto ?>')">Seleccionar nueva
+                                etiqueta</button>
                         </div>
                         <center>
                             <p>En este apartado puedes seleccionar todas las categorías o etiquetas para que el proyecto
@@ -154,8 +159,10 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                         ?>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                                <?php echo $k->dec($etiqueta['NOMBRE']) ?>                                                
-                                                <button class="btn btn-danger">Eliminar</button>
+                                                <?php echo $k->dec($etiqueta['NOMBRE']) ?>
+                                                <br>
+                                                <button class="btn btn-danger"
+                                                    onclick="eliminar_etiqueta('<?php echo $etiqueta['ID_ETIQUETA'] ?>', '<?php echo $id_proyecto ?>')">Eliminar</button>
                                             </li>
                                         </ul>
                                         <?php
@@ -194,6 +201,101 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
 }
 ?>
 <script>
+    function eliminar_etiqueta(id_etiqueta, id) {
+        Swal.fire({
+            title: 'Confirmar eliminaciòn de etiquea',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = {
+                    id_etiqueta: id_etiqueta,
+                    id: id,
+                };
+                $.ajax({
+                    url: 'AJAX/etiquetas/Eliminar_etiqueta_proyecto_ajax.php',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        console.log(response);
+                        if (response == 1) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'Etiqueta eliminada correctamente',
+                                icon: 'success',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'Reintente en unos minutos',
+                                icon: 'error',
+                            })
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+        });
+    }
+    function seleccionar_etiqueta(id_etiqueta, id) {
+        var data = {
+            id_etiqueta: id_etiqueta,
+            id: id,
+        };
+        $.ajax({
+            url: 'AJAX/etiquetas/Seleccionar_etiqueta_ajax.php',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response == 1) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'Etiqueta asignada correctamente',
+                        icon: 'success',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: 'Reintente en unos minutos',
+                        icon: 'error',
+                    })
+                }
+            },
+            error: function (error) {
+
+            }
+        });
+    }
+    function seleccionar_nueva_etiqueta(id) {
+        $("#modal_modificacion_etiquetas").modal('show');
+        var data = {
+            id: id,
+        };
+        $.ajax({
+            url: 'AJAX/etiquetas/Obtener_etiquetas_ajax.php',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                $("#modal_body_etiqueta").html(response);
+            },
+            error: function (error) {
+                // Manejar errores si ocurren
+                //console.error(error);
+            }
+        });
+    }
     function subir_archivo() {
         $("#upload_file").click();
     }
@@ -217,7 +319,7 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                 processData: false,  // Evita que jQuery procese los datos
                 contentType: false,  // Evita que jQuery configure el encabezado Content-Type
                 success: function (response) {
-                    console.log(response);
+                    //console.log(response);
                     if (response.result == 1) {
                         Swal.fire({
                             title: '¡Exito!',
@@ -352,27 +454,78 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
             });
         }
     });
+
+    function confirmar_eliminar(id) {
+        Swal.fire({
+            title: 'Confirmar eliminaciòn de imagen',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = { id: id };
+                jQuery.ajax({
+                    url: "AJAX/imagenes/eliminar_imagen_ajax.php",
+                    type: "POST",
+                    data: data,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.result == 1) {
+                            Swal.fire('Imagen eliminada', '', 'success').then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire('Reintente más tarde', '', 'warning')
+                        }
+                    }
+                })
+            }
+        });
+    }
 </script>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_modificacion_datos">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modificación de datos generales</h5>
+                <h5 class="modal-title" id="modal_title">Modificación de datos generales</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="text-align:center">
+            <div class="modal-body" style="text-align:center" id="modal_body">
                 <p class="card-text">
-                    <input type="hidden" name="id_proyecto" id="id_proyecto" value="<?php echo $id_proyecto ?>">
-                    NOMBRE<br><input id="nombre" name="nombre" type="text" value="<?php echo ($nombre_proyecto) ?>">
+                    <input type="hidden" name="id_proyecto" id="id_proyecto"
+                        value="<?php echo isset($id_proyecto) ? $id_proyecto : '' ?>">
+                    NOMBRE<br><input id="nombre" name="nombre" type="text"
+                        value="<?php echo isset($nombre_proyecto) ? $nombre_proyecto : '' ?>">
                     <br><br>
                     <textarea name="descripcion" id="descripcion" cols="23"
-                        rows="5"><?php echo $k->dec($descripcion) ?></textarea><br><br>
+                        rows="5"><?php echo isset($descripcion) ? $k->dec($descripcion) : '' ?></textarea><br><br>
             </div>
             <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
                 <button type="button" class="btn btn-primary"
                     onclick="modificar_proyecto('<?php echo $id_proyecto; ?>')">Modificar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_modificacion_etiquetas">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Modificación de etiquetas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align:center" id="modal_body_etiqueta">
+
+            </div>
+            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
