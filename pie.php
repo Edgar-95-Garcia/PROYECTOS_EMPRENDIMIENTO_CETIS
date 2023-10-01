@@ -27,8 +27,7 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
             <a href="">
                 <center><img src="./Static/images/insta.png" align='center' width="100" height="100"></center>
             </a> -->
-        <p>Correo: </p>
+        <p> <a href="sugerencias.php" style="color:white">Da click aquí para envíar una sugerencia</a></p>
         <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
-        <p>Pagina web:</p>
     </center>
 </footer>

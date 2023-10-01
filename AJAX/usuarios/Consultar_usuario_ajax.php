@@ -15,7 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         array_push($arreglo, $k->dec($datos[1]));
         array_push($arreglo, $k->dec($datos[2]));
         array_push($arreglo, $k->dec($datos[3]));
-        array_push($arreglo, $k->dec($datos[4]));        
+        if(isset($datos[4])){
+            array_push($arreglo, $k->dec($datos[4]));
+        }
         array_push($arreglo, $k->dec($datos[6]));
         array_push($arreglo, ($datos[7]));        
         array_push($arreglo, ($datos[8]));

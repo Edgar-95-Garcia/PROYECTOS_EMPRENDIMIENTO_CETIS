@@ -82,7 +82,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
                                 <?php echo $fecha_registro ?>
                             </td>
                             <td>
-                                <button class="btn btn-info" style="width: 100px;" data-toggle="modal" data-target="#modal"
+                                <button class="btn btn-info" style="width: 100px;" data-toggle="modal" data-target="#modal_modificar_alumno"
                                     onclick="cambiar_datos('<?php echo $id; ?>')">Modificar</button>
                                 <br><br>
                                 <button class="btn btn-danger" style="width: 100px;"
@@ -146,7 +146,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
             dataType: "json",
             data: data,
             error: function (response) {
-                console.log("Error" + (response));
+                console.log("Error" + (JSON.stringify(response)));
             },
             success: function (data) {
                 //console.log(data);
@@ -170,6 +170,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
                         break;
                 }
                 $("#registro").val(data[8]);
+                console.log(JSON.stringify(data));
                 var selectElement = document.getElementById("estatus");
                 switch (parseInt(data[7])) {
                     case 0:
@@ -231,7 +232,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
         })
     }
 </script>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_modificar_alumno">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

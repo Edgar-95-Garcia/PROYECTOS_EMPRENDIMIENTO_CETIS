@@ -45,6 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
             $_SESSION["id"] = $consultar->selectUserIDFromCorreo($matricula);
+            include_once("./CONTROLADOR/key.php");
+            $k = new key();
+            include_once("./MODELO/Aud/Insertar_aud.php");
+            $obj_aud = new Insertar_aud();
+            $obj_aud->add_aud(array(null, $_SESSION["id"], $k->enc("ingreso"), $k->enc(date("Y-m-d"))));
             ?>
                 <script>
                     Swal.fire({
@@ -65,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_cetis"] = $actual_session;
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
-            $_SESSION["admin_cetis"] = "cetis";
+            $_SESSION["admin_cetis"] = "cetis";            
             ?>
                     <script>
                         Swal.fire({
@@ -87,6 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
             $_SESSION["id_profesor"] = $consultar->selectUserIDFromCorreo($matricula);
+            include_once("./CONTROLADOR/key.php");
+            $k = new key();
+            include_once("./MODELO/Aud/Insertar_aud.php");
+            $obj_aud = new Insertar_aud();
+            $obj_aud->add_aud(array(null, $_SESSION["id_profesor"], $k->enc("ingreso"), $k->enc(date("Y-m-d"))));
             ?>
                         <script>
                             window.location.replace("./index.php");

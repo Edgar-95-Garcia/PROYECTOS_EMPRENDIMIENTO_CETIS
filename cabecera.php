@@ -29,8 +29,8 @@ if (!isset($GLOBALS['menu'])) {
         crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
-
-
+    <!--  -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- /-->
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js"> </script>
@@ -83,7 +83,7 @@ if (!isset($GLOBALS['menu'])) {
         <br>
     </div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark" aling="center"
-        style="padding:0px 0px 0px 200px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px; float:inline-end;margin-left:0%">
+        style="padding:0px 0px 0px 100px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px;">
         <a class="navbar-brand" href="./index.php"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#colNav">
             <span class="navbar-toggler-icon"></span>
@@ -117,8 +117,7 @@ if (!isset($GLOBALS['menu'])) {
                         <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
                                 ?>
                             <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php"> Administrar etiquetas</a>
-                            <a class="dropdown-item" aling="center" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>
-                            
+                            <a class="dropdown-item" aling="center" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>                            
                             <?php
                             } ?>
                     </div>
@@ -153,6 +152,22 @@ if (!isset($GLOBALS['menu'])) {
                                 profesores</a>
                             <a class="dropdown-item" aling="center" href="./admon_alumnos.php">Administrar
                                 alumnos</a>
+                        </div>
+                    </li>                    
+                    <?php
+                }
+                ?>
+                <?php
+                if (isset($_SESSION["admin_cetis"])) {
+                    ?>
+                    <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'reportes') ? 'active' : ''; ?>">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Reportes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" aling="center" href="./admon_sugerencias.php">Sugerencias</a>
+                            <a class="dropdown-item" aling="center" href="./reporte_ingresos.php">Reporte ingresos</a>
                         </div>
                     </li>                    
                     <?php

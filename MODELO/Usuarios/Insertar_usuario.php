@@ -48,7 +48,7 @@ class Insertar_usuario
                     $statementHandle = $mysql_object->connect()->prepare("INSERT INTO usuarios(ID_USUARIO, NOMBRE, APELLIDO_P, APELLIDO_M, CORREO, MATRICULA, PASS, TIPO, STATUS, FECHA_ALTA) VALUES (?,?,?,?,?,?,?,?,?,?)");
                 } else { //Registro de tipo profesor. No tiene acceso inmediato al sistema, debe ser validado por administrador
                     $data[7] = 2;
-                    $data[8] = 0;
+                    $data[8] = 1;
                     $data[5] = NULL;
                     $statementHandle = $mysql_object->connect()->prepare("INSERT INTO usuarios(ID_USUARIO, NOMBRE, APELLIDO_P, APELLIDO_M, CORREO, MATRICULA, PASS, TIPO, STATUS, FECHA_ALTA) VALUES (?,?,?,?,?,?,?,?,?,?)");
                 }
