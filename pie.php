@@ -17,17 +17,10 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
 </body>
 <footer
     style="background-color: <?php echo $k->dec($color_fondo_inferior) ?>; font-size:large;font-family:Montserrat Black; font-size:19px;color:white">
-    <center>
-        <!-- <a href="">
-                <center><img src="./Static/images/face.png" align='right' width="100" height="100"></center>
-            </a>
-            <a href="">
-                <center><img src="" align='left' width="100" height="100"></center>
-            </a>
-            <a href="">
-                <center><img src="./Static/images/insta.png" align='center' width="100" height="100"></center>
-            </a> -->
-        <p> <a href="sugerencias.php" style="color:white">Da click aquí para envíar una sugerencia</a></p>
+    <br>
+    <center>        
+        <p><a href="sugerencias.php" style="color:white">Da click aquí para envíar una sugerencia</a></p>
         <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
     </center>
+    <br>
 </footer>

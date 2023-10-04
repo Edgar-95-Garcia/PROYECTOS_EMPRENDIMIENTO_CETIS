@@ -179,10 +179,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <?php
                             }
                         }
-                    } else {
-                        ?>
-                            <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión</a>
-                        <?php
                     }
                     ?>
                     <br><br>

@@ -5,39 +5,59 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-    include_once("./cabecera.php");
-    ?>
-    <center>
-        <br><br>
-        <h2>FORMULARIO PARA AGREGAR SUGERENCIAS</h2>
-        <hr class="red">
-        <br><br>
-    </center>
-    <div class="card text-center" style="width:50%;height:100%; position:relative;left:25%">
-        <div class="card-body">
-            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-body">
-                        <font size="4" face="Constantia">
-                            <p>Envía una sugerencia, comentario o queja</p>
-                            <textarea name="sug" id="sug" cols="50" rows="10"></textarea>
-                            <br><br><br>
-                            <?php include_once("./CONTROLADOR/sugerencias/registro_sugerencias.php"); ?>
-                            <input type="submit" class="btn btn-success" style="width: 60%;" value="Aceptar" name="aceptar">
-                            </p>
-                        </font>
-                    </div>
-                </div>
-                <br>
-            </form>
-        </div>
-    </div>
+include_once("./cabecera.php");
+?>
+<center>
     <br><br>
+    <h2>FORMULARIO PARA AGREGAR SUGERENCIAS</h2>
+    <hr class="red">
+    <br><br>
+</center>
+<div class="card text-center card_media" style="">
+    <div class="card-body">
+        <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body">
+                    <font size="4" face="Constantia">
+                        <p>Envía una sugerencia, comentario o queja</p>
+                        <textarea class="text_area_media" name="sug" id="sug" rows="10"></textarea>
+                        <br><br><br>
+                        <?php include_once("./CONTROLADOR/sugerencias/registro_sugerencias.php"); ?>
+                        <input type="submit" class="btn btn-success" style="width: 60%;" value="Aceptar" name="aceptar">
+                        </p>
+                    </font>
+                </div>
+            </div>
+            <br>
+        </form>
     </div>
-    <?php
-    include_once("./pie.php");
+</div>
+<br><br>
+</div>
+<?php
+include_once("./pie.php");
 
 ?>
+<style>
+    @media (orientation: landscape) {
+        .card_media {
+            width: 50%;
+            height: 100%;
+            position: relative;
+            left: 25%
+        }
+    }
+
+    @media (orientation: portrait) {
+        .card_media {
+            width: 90%;
+            height: 100%;
+            position: relative;
+            left: 5%
+        }
+
+    }
+</style>
 <style>
     .container {
         display: grid;
@@ -71,3 +91,13 @@ if (!isset($_SESSION)) {
         position: absolute;
     }
 </style>
+<script>
+    window.addEventListener('orientationchange', function () {
+        var textarea = document.querySelector('textarea');
+        if (window.orientation === 90 || window.orientation === -90) {
+            textarea.style.cols = 50;
+        } else {
+            textarea.style.cols = 25;
+        }
+    });
+</script>

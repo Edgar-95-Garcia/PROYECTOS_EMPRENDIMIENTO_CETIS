@@ -73,12 +73,12 @@ if (!isset($GLOBALS['menu'])) {
     }
 
     ?>
-    <div style="background-color: <?php echo $k->dec($color_menu_fondo_superior) ?>">        
-    <br>
+    <div style="background-color: <?php echo $k->dec($color_menu_fondo_superior) ?>">
+        <br>
         <center>
-            <img src="./Static/images/logo_dgeti.png" width="200" height="70px" style="background-color:white;position:relative; left:40%">
-            
-            <img src="./Static/images/LOGO-SEP.png" width="200" height="70" style="background-color:white;position:relative; right:40%">
+            <img class="img_media_1" src="./Static/images/logo_dgeti.png">
+
+            <img class="img_media_2" src="./Static/images/LOGO-SEP.png">
         </center>
         <br>
     </div>
@@ -110,14 +110,18 @@ if (!isset($GLOBALS['menu'])) {
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php if (isset($_SESSION['user']) && isset($_SESSION['id'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
                                 ?>
-                            <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis proyectos</a>
+                            <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis
+                                proyectos</a>
                             <?php
                             } ?>
-                        <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php"> Explorar proyectos</a>
+                        <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php"> Explorar
+                            proyectos</a>
                         <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
                                 ?>
-                            <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php"> Administrar etiquetas</a>
-                            <a class="dropdown-item" aling="center" href="" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>                            
+                            <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php">
+                                Administrar etiquetas</a>
+                            <a class="dropdown-item" aling="center" href="" data-toggle="modal" data-target="#modal"> Crear
+                                nuevo proyecto</a>
                             <?php
                             } ?>
                     </div>
@@ -132,7 +136,7 @@ if (!isset($GLOBALS['menu'])) {
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'registro') ? 'active' : ''; ?>">
                     <?php
                     if (isset($_SESSION['admin_cetis'])) {
-                        
+
                     }
                     ?>
                 </li>
@@ -153,7 +157,7 @@ if (!isset($GLOBALS['menu'])) {
                             <a class="dropdown-item" aling="center" href="./admon_alumnos.php">Administrar
                                 alumnos</a>
                         </div>
-                    </li>                    
+                    </li>
                     <?php
                 }
                 ?>
@@ -167,9 +171,10 @@ if (!isset($GLOBALS['menu'])) {
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" aling="center" href="./admon_sugerencias.php">Sugerencias</a>
-                            <a class="dropdown-item" aling="center" href="./reporte_ingresos.php">Reporte inicios de sesión</a>
+                            <a class="dropdown-item" aling="center" href="./reporte_ingresos.php">Reporte inicios de
+                                sesión</a>
                         </div>
-                    </li>                    
+                    </li>
                     <?php
                 }
                 ?>
@@ -192,72 +197,106 @@ if (!isset($GLOBALS['menu'])) {
         </div>
     </nav>
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Crear nuevo proyecto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="text-align:center">
-                <p class="card-text">
-                    <input type="hidden" name="id_profesor" id="id_profesor">
-                    NOMBRE DEL PROYECTO<br><input id="nombre_registro" name="nombre_registro" type="text"> <br><br>
-                    DESCRIPCIÓN DEL PROYECTO<br><textarea id="descripcion_registro" name="descripcion_registro" cols="23"
-                        rows="5"></textarea><br><br>
-            </div>
-            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
-                <button type="button" class="btn btn-primary" onclick="registrar_proyecto()">Aceptar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear nuevo proyecto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <p class="card-text">
+                        <input type="hidden" name="id_profesor" id="id_profesor">
+                        NOMBRE DEL PROYECTO<br><input id="nombre_registro" name="nombre_registro" type="text"> <br><br>
+                        DESCRIPCIÓN DEL PROYECTO<br><textarea id="descripcion_registro" name="descripcion_registro"
+                            cols="23" rows="5"></textarea><br><br>
+                </div>
+                <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
+                    <button type="button" class="btn btn-primary" onclick="registrar_proyecto()">Aceptar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    function registrar_proyecto() {
-        nombre = $("#nombre_registro").val();
-        descripcion = $("#descripcion_registro").val();
-        var data = {
-            nombre: nombre,
-            descripcion: descripcion,
-        };
-        jQuery.ajax({
-            url: "AJAX/proyectos/registrar_proyecto_ajax.php",
-            type: "POST",
-            data: data,
-            dataType: "json",
-            success: function (data) {
-                if (data.result == 1) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Registro exitoso',
-                        icon: 'success',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: 'No realizado, reintentar en unos minutos',
-                        icon: 'error',
-                    })
+    <script>
+        function registrar_proyecto() {
+            nombre = $("#nombre_registro").val();
+            descripcion = $("#descripcion_registro").val();
+            var data = {
+                nombre: nombre,
+                descripcion: descripcion,
+            };
+            jQuery.ajax({
+                url: "AJAX/proyectos/registrar_proyecto_ajax.php",
+                type: "POST",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == 1) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Registro exitoso',
+                            icon: 'success',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: 'No realizado, reintentar en unos minutos',
+                            icon: 'error',
+                        })
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
                 }
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        })
-    }
+            })
+        }
 
-</script>
-<style>    
-    .dropdown-menu{
-        background-color: #64042C;        
-    }
-    .dropdown-item{
-        color:white;
-    }
-</style>
+    </script>
+    <style>
+        .dropdown-menu {
+            background-color: #64042C;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+
+        @media (orientation: landscape) {
+            .img_media_1 {
+                background-color: white;
+                position: relative;
+                left: 30%;
+                width: 300px;
+                height: 100px;
+            }
+            
+            .img_media_2 {
+                background-color: white;
+                position: relative;
+                right: 30%;
+                width: 300px;
+                height: 100px;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .img_media_1 {
+                background-color: white;
+                width: 150px;
+                height: 60px;
+            }
+            
+            .img_media_2 {
+                background-color: white;
+                width: 150px;
+                height: 60px;
+            }
+
+        }
+    </style>
