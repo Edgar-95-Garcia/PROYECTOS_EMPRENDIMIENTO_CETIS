@@ -13,7 +13,7 @@ include_once("./cabecera.php");
     <hr class="red">
     <br><br>
 </center>
-<div class="card text-center card_media" style="">
+<div class="card text-center card_media">
     <div class="card-body">
         <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
             <div class="card">
