@@ -1,0 +1,26 @@
+<?php
+class Modificar_participante_proyecto
+{
+    function updateParticipanteProjectByID($nombre, $descripcion, $id_proyecto)
+    {        
+        try {
+            include_once("../../MODELO/conect.php");
+            $c = new conect();
+            include_once("../../CONTROLADOR/key.php");
+            $k = new key();
+            $coincidencia = 0;
+            $fecha = date("Y-m-d H:i:s");
+            $stmt = $c->connect()->prepare("UPDATE participante_proyecto SET NOMBRE_PROYECTO = '" . ($nombre) . "' , FECHA_MODIFICACION = '" . $k->enc($fecha) . "', DESCRIPCION = '" . $k->enc($descripcion) . "'  WHERE ID_PROYECTO = '" . $id_proyecto . "'");
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $coincidencia = 1;
+            } else {
+                $coincidencia = 0;
+            }
+        } catch (PDOException $e) {
+            $coincidencia = 0;
+        }
+        return $coincidencia;
+    }
+
+}

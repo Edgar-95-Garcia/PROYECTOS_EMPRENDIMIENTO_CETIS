@@ -36,7 +36,7 @@ $obj_etiquetas = new Consultar_etiqueta_proyecto();
             <label>Búsqueda de proyectos por etiqueta</label>
             <br>
             <select class="js-example-basic-multiple" id="etiqueta_seleccionada" name="states[]" multiple="multiple"
-                style="width:90%" id="etiquetas" name="etiquetas">
+                style="width:100%" id="etiquetas" name="etiquetas">
                 <?php $todas_etiquetas = $obj_etiquetas->selectAllTags();
                 if (!empty($todas_etiquetas)) {
                     foreach ($todas_etiquetas as $etiquetas_individuales) {
@@ -101,6 +101,50 @@ include_once("./pie.php");
             }
         })
     }
+
+    function seleccionar_proyecto(id_proyecto, id_usuario, tipo_usuario, usuario_texto) {
+        Swal.fire({
+            title: usuario_texto + ': confirmar inscripción',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = {
+                    id_proyecto: id_proyecto,
+                    id_usuario: id_usuario,
+                    tipo_usuario: tipo_usuario,
+                };
+                $.ajax({
+                    url: 'AJAX/participantes/registrar_participante_proyecto_ajax.php',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'Registrado en proyecto correctamente',
+                                icon: 'success',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'Reintente en unos minutos',
+                                icon: 'error',
+                            })
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+        });
+    }
 </script>
 <style>
     .container {
@@ -111,6 +155,30 @@ include_once("./pie.php");
         grid-auto-flow: row;
         grid-template-areas:
             ". . .";
+    }
+
+    @media (orientation: landscape) {
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 60px 0px;
+            grid-auto-flow: row;
+            grid-template-areas:
+                ". . .";
+        }
+    }
+
+    @media (orientation: portrait) {
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 60px 0px;
+            grid-auto-flow: row;
+            grid-template-areas:
+                ". .";
+        }
     }
 
     .red {

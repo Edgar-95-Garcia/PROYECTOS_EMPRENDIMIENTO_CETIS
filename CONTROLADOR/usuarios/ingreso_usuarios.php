@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $actual_session = md5($matricula);
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
-            $_SESSION["id"] = $consultar->selectUserIDFromCorreo($matricula);
+            $_SESSION["id"] = $_SESSION["id_alumno"] = $consultar->selectUserIDFromCorreo($matricula);
             include_once("./CONTROLADOR/key.php");
             $k = new key();
             include_once("./MODELO/Aud/Insertar_aud.php");
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_cetis"] = $actual_session;
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
-            $_SESSION["admin_cetis"] = "cetis";            
+            $_SESSION["admin_cetis"] = "cetis";
             ?>
                     <script>
                         Swal.fire({
@@ -99,18 +99,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $obj_aud->add_aud(array(null, $_SESSION["id_profesor"], $k->enc("ingreso"), $k->enc(date("Y-m-d"))));
             ?>
                         <script>
-                            window.location.replace("./index.php");
-                        </script>
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Inicio de sesión exitoso',
+                            icon: 'success',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Aquí puedes poner la URL a la que deseas redireccionar
+                                window.location.href = "index.php";
+                            }
+                        });
+                    </script>
             <?php
         } else if ($val == 5) {
             ?>
-                <script>
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: 'Matricula o correo y/o contraseña incorrectoss',
-                        icon: 'error',
-                    })
-                </script>
+                            <script>
+                                Swal.fire({
+                                    title: '¡Error!',
+                                    text: 'Matricula o correo y/o contraseña incorrectoss',
+                                    icon: 'error',
+                                })
+                            </script>
             <?php
         }
     }

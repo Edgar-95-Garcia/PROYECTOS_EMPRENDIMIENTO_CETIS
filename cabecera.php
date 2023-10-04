@@ -83,7 +83,7 @@ if (!isset($GLOBALS['menu'])) {
         <br>
     </div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark" aling="center"
-        style="padding:0px 0px 0px 100px;background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px;">
+        style="background-color:<?php echo $k->dec($color_menu) ?>; font-size:large;font-family:Montserrat Black; font-size:19px;">
         <a class="navbar-brand" href="./index.php"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#colNav">
             <span class="navbar-toggler-icon"></span>
@@ -112,12 +112,12 @@ if (!isset($GLOBALS['menu'])) {
                                 ?>
                             <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis proyectos</a>
                             <?php
-                            } ?>                            
+                            } ?>
                         <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php"> Explorar proyectos</a>
                         <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
                                 ?>
                             <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php"> Administrar etiquetas</a>
-                            <a class="dropdown-item" aling="center" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>                            
+                            <a class="dropdown-item" aling="center" href="" data-toggle="modal" data-target="#modal"> Crear nuevo proyecto</a>                            
                             <?php
                             } ?>
                     </div>
@@ -167,7 +167,7 @@ if (!isset($GLOBALS['menu'])) {
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" aling="center" href="./admon_sugerencias.php">Sugerencias</a>
-                            <a class="dropdown-item" aling="center" href="./reporte_ingresos.php">Reporte ingresos</a>
+                            <a class="dropdown-item" aling="center" href="./reporte_ingresos.php">Reporte inicios de sesión</a>
                         </div>
                     </li>                    
                     <?php
@@ -251,4 +251,13 @@ if (!isset($GLOBALS['menu'])) {
             }
         })
     }
+
 </script>
+<style>    
+    .dropdown-menu{
+        background-color: #64042C;        
+    }
+    .dropdown-item{
+        color:white;
+    }
+</style>

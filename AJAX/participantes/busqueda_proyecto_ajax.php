@@ -120,68 +120,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </ul>
                 <div class="card-body">
                     <?php
-                    if (isset($_SESSION['id_alumno'])) {
+                    if (isset($_SESSION['user'])) {
                         $datos_participante = $obj_participante->selectParticipanteProjectbyIdAJAX($proyecto['ID_PROYECTO'], 1);
-                        if ($datos_participante[0][0] >= 0 && $datos_participante[0][0] < 3) { //El proyecto tiene lugares disponibles
-                            //verificar que el usuario actual no se haya inscrito en el proyecto
-                            $datos_participante = $obj_participante->selectDataParticipanteProjectbyIdAJAX($proyecto['ID_PROYECTO'], 1);
-                            $auxiliar = false;
-                            foreach ($datos_participante as $participante) {
-                                if ($participante['ID_USUARIO'] == $_SESSION['id_alumno']) {
-                                    $auxiliar = true; //Ya está inscrito
-                                }
-                            }
-                            if (!$auxiliar) {
-                                ?><a class="btn btn-primary" class="card-link" style="width:100%; color:white"
-                                    onclick="seleccionar_proyecto('<?php echo $proyecto['ID_PROYECTO'] ?>', '<?php echo $_SESSION['id_alumno'] ?>', '1', 'Alumno')">Inscríbete</a>
-                                <?php
-                            } else {
-                                ?>
-                                <p><b>Ya estás inscrito en este proyecto</b></p>
-                                <?php
-                            }
-                        } else if ($datos_participante[0][0] >= 3) { //El proyecto ya tiene los 3 lugares disponibles para los alumnos
-                            ?>
-                                <p><b>El proyecto ya no cuenta con lugares disponibles</b></p>
+                        if ($datos_participante[0][0] == 0) { //El proyecto no tiene alumnos inscritos
+                            ?><a class="btn btn-primary" class="card-link" style="width:100%" href="" onclick="seleccionar_proyecto('<?php echo $proyecto['ID_PROYECTO']?>', '<?php echo $_SESSION['user']?>', '1')">Inscríbete</a>
                             <?php
+                        } else if ($datos_participante[0][0] < 2) { //El proyecto ya tiene los 3 lugares disponibles para los alumnos
+        
                         }
-                    } else if (isset($_SESSION['id_profesor'])) {
-                        $datos_participante = $obj_participante->selectParticipanteProjectbyIdAJAX($proyecto['ID_PROYECTO'], 0);
-                        if ($datos_participante[0][0] >= 0 && $datos_participante[0][0] < 1) { //El proyecto tiene lugares disponibles para un profesor
-                            //verificar que el usuario actual no se haya inscrito en el proyecto
-                            $datos_participante = $obj_participante->selectDataParticipanteProjectbyIdAJAX($proyecto['ID_PROYECTO'], 0);
-                            $auxiliar = false;
-                            foreach ($datos_participante as $participante) {
-                                if ($participante['ID_USUARIO'] == $_SESSION['id_profesor']) {
-                                    $auxiliar = true; //Ya está inscrito
-                                }
-                            }
-                            if (!$auxiliar) {
-                                ?><a class="btn btn-primary" class="card-link" style="width:100%; color:white"
-                                        onclick="seleccionar_proyecto('<?php echo $proyecto['ID_PROYECTO'] ?>', '<?php echo $_SESSION['id_profesor'] ?>', '0', 'Profesor')">Inscríbete</a>
-                                <?php
-                            }
-                        } else if ($datos_participante[0][0] >= 1) { //El proyecto ya no tiene lugar para el profesor
-                            $datos_participante = $obj_participante->selectDataParticipanteProjectbyIdAJAX($proyecto['ID_PROYECTO'], 0);
-                            $auxiliar = false;
-                            foreach ($datos_participante as $participante) {
-                                if ($participante['ID_USUARIO'] == $_SESSION['id_profesor']) {
-                                    $auxiliar = true; //Ya está inscrito
-                                }
-                            }
-                            if ($auxiliar) {
-                                ?>
-                                        <p><b>Profesor: ya se encuentra inscrito en este proyecto</b></p>
-                                <?php
-                            } else {
-                                ?>
-                                        <p><b>Profesor: el proyecto ya no cuenta con lugares disponibles</b></p>
-                                <?php
-                            }
-                        }
+                        ?>
+
+                        <?php
                     } else {
                         ?>
-                            <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión</a>
+                        <a class="" href="login.php" class="card-link" style="width:100%">Iniciar sesión</a>
                         <?php
                     }
                     ?>

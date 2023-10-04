@@ -80,8 +80,8 @@ class Consultar_usuario
             include_once("./CONTROLADOR/key.php");
             $k = new key();
             $nombre = "";
-            $stmt = $c->connect()->prepare("SELECT NOMBRE FROM usuarios WHERE MATRICULA = ?");
-            $stmt->execute(array(strval($k->enc($MATRICULA))));
+            $stmt = $c->connect()->prepare("SELECT NOMBRE FROM usuarios WHERE MATRICULA = ? or CORREO = ?");
+            $stmt->execute(array(strval($k->enc($MATRICULA)), strval($k->enc($MATRICULA))));
             foreach ($stmt as $v) {
                 $nombre = $v['NOMBRE'];
             }
@@ -99,7 +99,7 @@ class Consultar_usuario
             $c = new conect();
             include_once("./CONTROLADOR/key.php");
             $k = new key();
-            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE MATRICULA = ? OR CORREO = ? AND PASS = ?");
+            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE (MATRICULA = ? OR CORREO = ?) AND PASS = ?");
             $stmt->execute(array(strval($k->enc($MATRICULA)), $k->enc($MATRICULA), strval($k->enc($PASS))));
             $status = 0;
             $level = null;
@@ -146,8 +146,8 @@ class Consultar_usuario
             include_once("./CONTROLADOR/key.php");
             $k = new key();
             $nombre = "";
-            $stmt = $c->connect()->prepare("SELECT ID_USUARIO FROM usuarios WHERE MATRICULA = ?");
-            $stmt->execute(array(strval($k->enc($MATRICULA))));
+            $stmt = $c->connect()->prepare("SELECT ID_USUARIO FROM usuarios WHERE MATRICULA = ? or CORREO = ?");
+            $stmt->execute(array(strval($k->enc($MATRICULA)), strval($k->enc($MATRICULA))));
             $datos = $stmt->fetchAll();
             foreach ($datos as $d) {
                 $nombre = $d['ID_USUARIO'];
