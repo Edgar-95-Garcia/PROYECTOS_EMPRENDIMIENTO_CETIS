@@ -57,6 +57,20 @@ class Consultar_proyecto
         return $result;
     }
 
+    function selectProjectbyNameAndDesc($nombre_proyecto, $descripcion)
+    {
+        try {
+            $result = "";
+            require_once("../../MODELO/conect.php");
+            $c = new conect();
+            $stmt = $c->connect()->prepare("SELECT * FROM proyectos WHERE NOMBRE_PROYECTO = '$nombre_proyecto' AND DESCRIPCION = '$descripcion'");
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+        } catch (PDOException $e) {
+        }
+        return $result;
+    }
+
     function selectProjectbyTags($etiquetas)
     {
         try {

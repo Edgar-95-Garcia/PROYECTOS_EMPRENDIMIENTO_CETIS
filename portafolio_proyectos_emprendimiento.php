@@ -8,11 +8,14 @@ if (!isset($_SESSION)) {
 include_once("./cabecera.php");
 include_once("./CONTROLADOR/key.php");
 $k = new key();
+include_once("./MODELO/Participante_proyecto/Consultar_participante_proyecto.php");
+$obj_participante_proyectos = new Consultar_participante_proyecto();
+$datos_participante = $obj_participante_proyectos->selectDataParticipanteProjectbyId($_SESSION["id"]);
+//Se obtienen todos los proyectos en el que participa el estudiante actual
 include_once("./MODELO/Imagen_proyectos/Consultar_imagen_proyecto.php");
 $obj_imagen_proyectos = new Consultar_imagen_proyecto();
 include_once("./MODELO/Proyectos/Consultar_proyecto.php");
 $obj_proyectos = new Consultar_proyecto();
-$datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
 ?>
 <br><br>
 <center>
@@ -38,14 +41,17 @@ $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
                     include_once("./CONTROLADOR/key.php");
                     $k = new key();
                     $contador = 0;
-                    if (!empty($datos_proyectos)) {
-                        foreach ($datos_proyectos as $proyecto) {
-                            $id = $proyecto['ID_PROYECTO'];
-                            $nombre = $proyecto['NOMBRE_PROYECTO'];
-                            $descripcion = $proyecto['DESCRIPCION'];
-                            $fecha_modificacion = $proyecto['FECHA_MODIFICACION'];
+                    if (!empty($datos_participante)) {
+                        foreach ($datos_participante as $participante) {
+                            $datos_proyecto = $obj_proyectos->selectProjectbyId($participante['ID_PROYECTO']);
+                            foreach ($datos_proyecto as $proyecto) {
+                                $id = $proyecto['ID_PROYECTO'];
+                                $nombre = $proyecto['NOMBRE_PROYECTO'];
+                                $descripcion = $proyecto['DESCRIPCION'];
+                                $fecha_modificacion = $proyecto['FECHA_MODIFICACION'];
+                                $contador++;
+                            }
 
-                            $contador++;
                             ?>
                             <tr>
                                 <th scope="row">
@@ -62,10 +68,9 @@ $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
                                 </td>
                                 <td>
                                     <button class="btn btn-info" style="width: 200px;"
-                                        onclick="cambiar_datos('<?php echo $id; ?>','<?php echo $_SESSION['id']; ?>')">Verificar Avance</button>
+                                        onclick="cambiar_datos('<?php echo $id; ?>','<?php echo $_SESSION['id']; ?>')">Verificar
+                                        Avance</button>
                                     <br><br>
-                                    <!-- <button class="btn btn-danger" style="width: 200px;"
-                                        onclick="conf_delete('<?php echo $id ?>')">Eliminar</button> -->
                                 </td>
                             </tr>
                             <?php
@@ -73,7 +78,7 @@ $datos_proyectos = $obj_proyectos->selectAllProjectsbyIdUser($_SESSION["id"]);
                     } else {
                         ?>
                         <tr>
-                            <td colspan="8">No hay proyectos registrados</td>
+                            <td colspan="5">No hay proyectos registrados</td>
                         </tr>
                         <?php
                     }
@@ -92,37 +97,6 @@ include_once("./pie.php");
 <script>
     function cambiar_datos(id, u) {
         window.location.replace("avance_proyecto_emprendimiento.php?id=" + id + "&u=" + u);
-    }
-
-    
-    function conf_delete(id) {
-        Swal.fire({
-            title: 'Confirmar eliminaciòn de proyecto y toda su información relacionada',
-            showDenyButton: true,
-            confirmButtonText: 'Confirmar',
-            denyButtonText: `Cancelar`,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var data = { id: id };
-                jQuery.ajax({
-                    url: "./AJAX/proyectos/eliminar_proyecto_ajax.php",
-                    type: "POST",
-                    dataType: 'JSON',
-                    data: data,
-                    success: function (reponse) {
-                        if (reponse.result == 1) {
-                            Swal.fire('Proyecto eliminado', '', 'success').then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                }
-                            });
-                        } else {
-                            Swal.fire('Reintente más tarde', '', 'warning')
-                        }
-                    }
-                })
-            }
-        })
     }
 </script>
 <style>

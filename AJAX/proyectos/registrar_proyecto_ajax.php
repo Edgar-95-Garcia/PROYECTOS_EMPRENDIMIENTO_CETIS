@@ -8,10 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once("../../MODELO/conect.php");
     $mysql_object = new conect();
     include_once("../../MODELO/Proyectos/Insertar_proyecto.php");
-    $obj_proyectos = new Insertar_proyecto();
-    if(!isset($_SESSION['id'])){
-        session_start();
-    }
-    return $obj_proyectos->registro_proyecto(array(null, 0, ($nombre), $k->enc($descripcion), $k->enc(date("Y-m-d H:i:s"))));
-
+    $obj_proyectos = new Insertar_proyecto();    
+    return $obj_proyectos->registro_proyecto(0, ($nombre), $k->enc($descripcion), $k->enc(date("Y-m-d H:i:s")));
 }

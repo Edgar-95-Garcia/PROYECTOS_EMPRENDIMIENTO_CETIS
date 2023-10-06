@@ -119,8 +119,9 @@ include_once("./pie.php");
                     url: 'AJAX/participantes/registrar_participante_proyecto_ajax.php',
                     type: 'POST',
                     data: data,
-                    success: function (response) {
-                        if (response.result == 1) {
+                    dataType: 'json',
+                    success: function (returned) {
+                        if (returned.result == 1) {
                             Swal.fire({
                                 title: '¡Exito!',
                                 text: 'Registrado en proyecto correctamente',

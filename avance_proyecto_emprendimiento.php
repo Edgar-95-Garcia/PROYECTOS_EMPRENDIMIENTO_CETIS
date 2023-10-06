@@ -23,6 +23,17 @@ if (isset($_GET['id'])) {
     include_once("./MODELO/Etiquetas_proyectos/Consultar_etiqueta_proyecto.php");
     $obj_etiqueta_proyectos = new Consultar_etiqueta_proyecto();
     //-------------------------------------
+    include_once("./MODELO/Calificacion_proyectos/Consultar_calificacion_proyectos.php");
+    $obj_calificaciones = new Consultar_calificacion_proyectos();
+    $obj_bloques_proyecto = new Consultar_calificacion_proyectos();
+    //-------------------------------------
+    include_once("./MODELO/Participante_proyecto/Consultar_participante_proyecto.php");
+    $obj_participante = new Consultar_participante_proyecto();
+    $datos_participantes = $obj_participante->selectAllParticipanteProjectbyId($id_proyecto);
+    //-------------------------------------
+    include_once("./MODELO/Usuarios/Consultar_usuario.php");
+    $obj_usuarios = new Consultar_usuario();
+
     $datos_proyecto = $obj_proyectos->selectProjectbyId($id_proyecto);
     foreach ($datos_proyecto as $proyecto) {
         $id_usuario = $proyecto['ID_USUARIO'];
@@ -64,167 +75,274 @@ if (isset($_GET['id'])) {
                                     <?php echo ($nombre_proyecto) ?>
                                 </p>
                             </b>
+                            <hr>
                             <p>Descripción del proyecto</p>
                             <b>
                                 <p>
                                     <?php echo $k->dec($descripcion) ?>
                                 </p>
                             </b>
+                            <hr>
                             <p>Fecha de modificación</p>
                             <b>
                                 <p>
                                     <?php echo $k->dec($fecha_modificacion) ?>
                                 </p>
                             </b>
-                            <br><br>
+                            <hr>
+                            <p>Alumnos inscritos en el proyecto</p>
+                            <?php
+                            foreach ($datos_participantes as $participante) {
+                                if ($participante['TIPO_USUARIO'] == 1) {
+                                    $datos_usuarios = $obj_usuarios->selectNombreUserById($participante['ID_USUARIO']);
+                                    foreach ($datos_usuarios as $nombres) {
+                                        ?>
+                                        <div class="" style="width: 50%;">
+                                            <table class="table table-bordered table-hover table-responsive"
+                                                style="display: contents !important">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Nombres</th>
+                                                        <th scope="col">Matricula</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if (!empty($datos_usuarios)) {
+                                                        ?>
+                                                        <tr>
+                                                            <td>
+                                                                <b>
+                                                                    <?php echo $k->dec($nombres['NOMBRE']) . " " . $k->dec($nombres['APELLIDO_P']) . " " . $k->dec($nombres['APELLIDO_M']) . "<br>"; ?>
+                                                                </b>
+                                                            </td>
+                                                            <td>
+                                                                <b>
+                                                                    <?php echo $k->dec($nombres['MATRICULA']); ?>
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <td>
+                                                        <td>Aún no hay alumnos inscritos</td>
+                                                        </td>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                            }
+                            ?>
+                            <hr>
+                            <p>Profesor a cargo de revisar el proyecto</p>
+                            <?php
+                            foreach ($datos_participantes as $participante) {
+                                if ($participante['TIPO_USUARIO'] == 0) {
+                                    $datos_usuarios = $obj_usuarios->selectNombreUserById($participante['ID_USUARIO']);
+                                    foreach ($datos_usuarios as $nombres) {
+                                        ?>
+                                        <div class="" style="width: 50%;">
+                                            <table class="table table-bordered table-hover table-responsive"
+                                                style="display: contents !important">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Nombres</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if (!empty($datos_usuarios)) {
+                                                        ?>
+                                                        <tr>
+                                                            <td>
+                                                                <b>
+                                                                    <?php echo $k->dec($nombres['NOMBRE']) . " " . $k->dec($nombres['APELLIDO_P']) . " " . $k->dec($nombres['APELLIDO_M']) . "<br>"; ?>
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <td>
+                                                        <td>Aún no hay profesor a cargo del proyecto</td>
+                                                        </td>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                                aria-expanded="false" aria-controls="collapseTwo">
-                                BLOQUE I
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                        <br><br>
-                        <center>
-                            <p>Es la presentación sintética y concisa del informe de investigación, la cual explica la
-                                descripción del problema, el alcance, las limitaciones, la metodología o procedimientos que
-                                se utilizarán, pero sin adelantar resultados ni llegar a concluir, asimismo, pueden citarse
-                                agradecimientos institucionales. (Se deberá limitar a una cuartilla).</p>
-                        </center>
-                        <div class="card-body">
-                            <button class="btn btn-primary" onclick="subir_archivo()">Subir archivos para este
-                                bloque</button>
-                            <br>
-                            <input class="invisible" type="file" name="upload_file" id="upload_file"
-                                accept=".zip,.rar,.pdf">
-                            <br>
-                            <?php
-                            $datos_archivos_proyecto = $obj_archivo_proyectos->selectFileProyectByID($id_proyecto);
-                            ?>
-                            <div class="" style="width: 50%">
-                                <table class="table table-bordered table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">NOMBRE</th>
-                                            <th scope="col">FECHA MODIFICACIÓN</th>
-                                            <th scope="col">ACCIONES</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $contador = 0;
-                                        if (!empty($datos_archivos_proyecto)) {
-                                            foreach ($datos_archivos_proyecto as $archivo_proyecto) {
-                                                $contador++;
+                <?php
+                $datos_bloques = $obj_bloques_proyecto->selectAllByIdProyecto($id_proyecto);
+                //Se obtienen todos los bloques del proyecto y se crean las estructuras para el avance de cada uno de los bloques
+                foreach ($datos_bloques as $bloque) {
+                    $calificacion_bloque_actual = $bloque['CALIFICACION'];
+                    $bloque_finalizado = $bloque['FINALIZADO'];
+                    $titulo_bloque = $k->dec($bloque['TITULO']);
+                    /* Archivos del bloque y proyecto seleccionado */
+                    $datos_archivos_proyecto = $obj_archivo_proyectos->selectFileProyectByIDAndBloque($id_proyecto, $bloque['BLOQUE']);
+                    ?>
+                    <div class="card">
+                        <div class="card-header" id="<?php echo "heading" . $bloque['BLOQUE'] ?>">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse"
+                                    data-target="#<?php echo "collapse" . $bloque['BLOQUE'] ?>" aria-expanded="false"
+                                    aria-controls="<?php echo $bloque['BLOQUE'] ?>">
+                                    <?php echo $k->dec($bloque['BLOQUE']) ?>
+                                    <br>
+                                    <?php echo $titulo_bloque ?>
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="<?php echo "collapse" . $bloque['BLOQUE'] ?>" class="collapse"
+                            aria-labelledby="<?php echo "heading" . $bloque['BLOQUE'] ?>" data-parent="#accordion">
+                            <div class="card-body">
+                                <?php
+                                //--------------------------------------------------------------------------
+                                if ($bloque_finalizado != 1) {
+                                    ?>
+                                    <button class="btn btn-primary" style="width:30%"
+                                        onclick="subir_archivo('<?php echo $k->dec($bloque['BLOQUE']) ?>')">
+                                        <?php echo "Subir archivo a " . $k->dec($bloque['BLOQUE']); ?>
+                                    </button>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-primary" style="width:30%; color:white; background-color: #64042C"
+                                        onclick="bloque_finalizado('<?php echo $bloque['BLOQUE'] ?>', '<?php echo $id_proyecto ?>', 1)">Marcar
+                                        como
+                                        finalizado</button>
+                                    <?php
+                                } else {
+                                    //la siguiente opción se habilita solamente cuando el bloque ha sido seleccionado como terminado
+                                    //la siguiente opción es para que el profesor agregue una calificación y retroalimentación al
+                                    //bloque seleccionado del proyecto seleccionado
+                                    if (isset($_SESSION[''])) {
+                                    }
+                                    ?>
+                                    <h3>Este bloque ha sido marcado como finalizado, esperando calificación</h3>
+                                    <?php
+                                }
+                                //--------------------------------------------------------------------------                                
+                                ?>
+                                <br>
+                                <input class="invisible" type="file" name="upload_file" id="upload_file"
+                                    accept=".zip,.rar,.pdf">
+                                <br>
+                                <div class="" style="width: 50%">
+                                    <table class="table table-bordered table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">NOMBRE</th>
+                                                <th scope="col">FECHA MODIFICACIÓN</th>
+                                                <th scope="col">ACCIONES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $contador = 0;
+                                            //para los archivos del proyecto del bloque seleccionado
+                                            if (!empty($datos_archivos_proyecto)) {
+                                                foreach ($datos_archivos_proyecto as $archivo_proyecto) {
+                                                    $contador++;
+                                                    ?>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <?php echo $contador; ?>
+                                                        </th>
+                                                        <td>
+                                                            <?php echo $k->dec($archivo_proyecto['NOMBRE_ARCHIVO']) ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $k->dec($archivo_proyecto['FECHA_SUBIDA']) ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="#" style="width: 100%;" class="btn btn-primary" data-toggle="modal"
+                                                                data-target="#modal_visualizacion">Visualizar archivo</a>
+                                                            <br><br>
+                                                            <a href="./AJAX/archivos/descargar_archivo_ajax.php?id=<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>)"
+                                                                style="width: 100%;" class="btn btn-secondary">Descargar
+                                                                archivo</a>
+                                                            <br><br>
+                                                            <?php
+                                                            if ($bloque_finalizado != 1) {
+                                                                ?>
+                                                                <a href="#" style="width: 100%;" class="btn btn-danger"
+                                                                    onclick="eliminar_archivo('<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>')">Eliminar
+                                                                    archivo</a>
+                                                                <br><br>
+                                                                <?php
+                                                            }
+                                                            ?>
+
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            } else {
                                                 ?>
                                                 <tr>
-                                                    <th scope="row">
-                                                        <?php echo $contador; ?>
-                                                    </th>
-                                                    <td>
-                                                        <?php echo $k->dec($archivo_proyecto['NOMBRE_ARCHIVO']) ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $k->dec($archivo_proyecto['FECHA_SUBIDA']) ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <a href="#" style="width: 100%;" class="btn btn-primary" data-toggle="modal"
-                                                            data-target="#modal_visualizacion">Visualizar archivo</a>
-                                                        <br><br>
-                                                        <a href="./AJAX/archivos/descargar_archivo_ajax.php?id=<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>)"
-                                                            style="width: 100%;" class="btn btn-secondary">Descargar
-                                                            archivo</a>
-                                                        <br><br>
-                                                        <a href="#" style="width: 100%;" class="btn btn-danger">Eliminar
-                                                            archivo</a>
-                                                        <br><br>
-                                                    </td>
+                                                    <td colspan="4">No hay archivos registrados</td>
                                                 </tr>
                                                 <?php
                                             }
-                                        } else {
                                             ?>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                    <table class="table table-bordered table-hover table-responsive">
+                                        <thead>
                                             <tr>
-                                                <td colspan="4">No hay archivos registrados</td>
+                                                <th scope="col">Calificación profesor</th>
                                             </tr>
-                                            <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                                <hr>
-                                <table class="table table-bordered table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Calificación profesor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Aún no se ha calificado este bloque</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <hr>
-                                <table class="table table-bordered table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Retroalimentación/Comentarios de profesor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>Sin comentarios</td></tr>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Aún no se ha calificado este bloque</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                    <table class="table table-bordered table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Retroalimentación/Comentarios de profesor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Sin comentarios</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
-                                aria-expanded="false" aria-controls="collapseThree">
-                                BLOQUE II
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <center>
-
-                        </center>
-                        <div class="card-body">
-                            <p>BLOQUEADO HASTA FINALIZAR BLOQUE ANTERIOR</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingFour">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
-                                aria-expanded="false" aria-controls="collapseFour">
-                                BLOQUE III
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                        
-                        <center>
-                        </center>
-                        <div class="card-body">
-                            <p>BLOQUEADO HASTA FINALIZAR BLOQUE ANTERIOR</p>
-                        </div>
-
-                    </div>
-                </div>
+                    <?php
+                    if ($calificacion_bloque_actual < 100) {
+                        /*si se detecta que el bloque actual no tiene una calificación de 100
+                        entonces se rompe el ciclo y ya no se muestran los siguientes bloques
+                        */
+                        break;
+                    }
+                }
+                ?>
             </div>
             <br>
             <?php
@@ -264,7 +382,94 @@ if (isset($_GET['id'])) {
     </div>
 </div>
 <script>
-    function subir_archivo() {
+    function eliminar_archivo(id_archivo) {
+        Swal.fire({
+            title: 'Confirmar eliminación de archivo',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = {
+                    id_archivo: id_archivo,
+                };
+                $.ajax({
+                    url: 'AJAX/archivos/eliminar_archivo_ajax.php',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'El archivo ha sido eliminado',
+                                icon: 'success',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'Reintente en unos minutos',
+                                icon: 'error',
+                            })
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+        });
+    }
+    function bloque_finalizado(bloque, id_proyecto, opcion) {
+        Swal.fire({
+            title: 'Si seleccionas el bloque como finalizado no podrás eliminar ni subir nuevos archivos. ¿Continuar? ',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = {
+                    bloque: bloque,
+                    id_proyecto: id_proyecto,
+                    opcion: opcion,
+                };
+                $.ajax({
+                    url: 'AJAX/calificaciones/confirmar_calificacion.php',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        console.log(response);
+                        if (response == 1) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'El bloque ha sido seleccionado como finalizado',
+                                icon: 'success',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'Reintente en unos minutos',
+                                icon: 'error',
+                            })
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+        });
+    }
+    function subir_archivo(bloque) {
+        bloqueVal = bloque;
         $("#upload_file").click();
     }
     $("#upload_file").on("change", function () {
@@ -278,6 +483,7 @@ if (isset($_GET['id'])) {
             formData.append('archivo', selectedFile);
             formData.append('id', id);
             formData.append('nombre', fileName);
+            formData.append('bloque', bloqueVal);//Necesito que se pase la información del bloque aquí
             // Realizamos una llamada AJAX para enviar el archivo al servidor
             $.ajax({
                 url: 'AJAX/archivos/registrar_archivo_ajax.php', // Ruta al archivo PHP que manejará la inserción en la base de datos

@@ -4,7 +4,6 @@ class Insertar_participante_proyecto
 {
     function insertParticipanteProyectoAJAX($data)
     {
-        $temp = 0;
         try {
             include_once("../../MODELO/conect.php");
             $mysql_object = new conect();
@@ -15,7 +14,6 @@ class Insertar_participante_proyecto
                 echo json_encode(array('result' => 0));
         } catch (PDOException $e) {
             echo json_encode(array('result' => 0));
-        }
-        return $temp;
+        }        
     }
 }

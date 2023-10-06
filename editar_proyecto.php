@@ -79,8 +79,11 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
                                 </p>
                             </b>
                             <br><br>
-                            <button class="btn btn-primary" data-toggle="modal"
+                            <button style="width: 30%;" class="btn btn-primary" data-toggle="modal"
                                 data-target="#modal_modificacion_datos">Modificar estos datos</button>
+                            <br><br>
+                            <button style="width: 30%;" class="btn btn-danger"
+                                onclick="eliminar_proyecto('<?php echo $id_proyecto ?>')">Eliminar proyecto</button>
                         </div>
                     </div>
                 </div>
@@ -201,6 +204,48 @@ if (isset($_GET['id']) && isset($_SESSION['admin_cetis'])) {
 }
 ?>
 <script>
+    function eliminar_proyecto(id_proyecto) {
+        Swal.fire({
+            title: 'Confirmar eliminaciòn de proyecto y toda su información (cuando aplique) como alumnos inscritos en él, calificaciones, archivos, imagenes, entre otros',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var data = {
+                    id_proyecto: id_proyecto,
+                };
+                $.ajax({
+                    url: 'AJAX/proyectos/eliminar_proyecto_ajax.php',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'El proyecto y toda su información ha sido eliminada',
+                                icon: 'success',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.replace("proyectos_emprendimiento.php");
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'Reintente en unos minutos',
+                                icon: 'error',
+                            })
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+        });
+    }
     function eliminar_etiqueta(id_etiqueta, id) {
         Swal.fire({
             title: 'Confirmar eliminaciòn de etiquea',

@@ -179,14 +179,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <?php
                             }
                         }
-                    } else if (isset($_SESSION['admin_cetis'])) {
+                    }
+                    ?>
+                    <br><br>
+                    <?php
+                    if (isset($_SESSION['admin_cetis'])) {
                         ?>
-                                <a class="btn btn-secondary" href="editar_proyecto.php?id=<?php echo ($proyecto['ID_PROYECTO']); ?>"
-                                    class="card-link" style="width:100%">Modificar</a>
-                        <?php
-                    }else{
-                        ?>
-                        <a href="login.php">Iniciar sesión</a>
+                        <a class="btn btn-secondary" href="editar_proyecto.php?id=<?php echo ($proyecto['ID_PROYECTO']); ?>"
+                            class="card-link" style="width:100%">Modificar</a>
                         <?php
                     }
                     ?>

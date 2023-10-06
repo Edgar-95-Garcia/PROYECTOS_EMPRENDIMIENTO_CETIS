@@ -15,6 +15,20 @@ class Consultar_usuario
         return $result;
     }
 
+    function selectNombreUserById($ID)
+    {
+        try {
+            $result = "";
+            require_once("./MODELO/conect.php");
+            $c = new conect();
+            $stmt = $c->connect()->prepare("SELECT * FROM usuarios WHERE ID_USUARIO = ?");
+            $stmt->execute(array($ID));
+            $result = $stmt->fetchAll();
+        } catch (PDOException $e) {
+        }
+        return $result;
+    }
+
 
     function selectUsersProfesor()
     {
