@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_profesor"] = $actual_session;
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
-            $_SESSION["id_profesor"] = $consultar->selectUserIDFromCorreo($matricula);
+            $_SESSION["id_profesor"] = $_SESSION["id"] = $consultar->selectUserIDFromCorreo($matricula);
             include_once("./CONTROLADOR/key.php");
             $k = new key();
             include_once("./MODELO/Aud/Insertar_aud.php");

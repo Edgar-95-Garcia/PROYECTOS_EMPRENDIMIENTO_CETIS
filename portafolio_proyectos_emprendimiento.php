@@ -19,7 +19,17 @@ $obj_proyectos = new Consultar_proyecto();
 ?>
 <br><br>
 <center>
-    <h2>PROYECTOS DE EMPRENDIMIENTO EN LOS QUE ME REGISTRÉ</h2>
+    <?php
+    if (isset($_SESSION['id_alumno'])) {
+        ?>
+        <h2>PROYECTOS DE EMPRENDIMIENTO EN LOS QUE ME REGISTRÉ</h2>
+        <?php
+    } else if (isset($_SESSION['id_profesor'])) {
+        ?>
+            <h2>PROYECTOS DE EMPRENDIMIENTO QUE ESTOY EVALUANDO</h2>
+        <?php
+    }
+    ?>
 </center>
 <hr class="red">
 <br><br>

@@ -108,7 +108,7 @@ if (!isset($GLOBALS['menu'])) {
                         Proyectos de emprendimiento
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <?php if (isset($_SESSION['user']) && isset($_SESSION['id'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
+                        <?php if (isset($_SESSION['id_alumno']) || isset($_SESSION['id_profesor'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
                                 ?>
                             <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis
                                 proyectos</a>

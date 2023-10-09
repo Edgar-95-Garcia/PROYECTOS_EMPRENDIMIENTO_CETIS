@@ -31,6 +31,9 @@ if (isset($_GET['id'])) {
     $obj_participante = new Consultar_participante_proyecto();
     $datos_participantes = $obj_participante->selectAllParticipanteProjectbyId($id_proyecto);
     //-------------------------------------
+    include_once("./MODELO/Comentarios/Consultar_comentario.php");
+    $obj_retroalimentacion = new Consultar_comentario();
+    //-------------------------------------
     include_once("./MODELO/Usuarios/Consultar_usuario.php");
     $obj_usuarios = new Consultar_usuario();
 
@@ -193,6 +196,8 @@ if (isset($_GET['id'])) {
                     $calificacion_bloque_actual = $bloque['CALIFICACION'];
                     $bloque_finalizado = $bloque['FINALIZADO'];
                     $titulo_bloque = $k->dec($bloque['TITULO']);
+                    $bloque_comentario_actual = ($bloque['BLOQUE']);
+                    $fecha_calificacion_bloque = ($bloque['FECHA']);
                     /* Archivos del bloque y proyecto seleccionado */
                     $datos_archivos_proyecto = $obj_archivo_proyectos->selectFileProyectByIDAndBloque($id_proyecto, $bloque['BLOQUE']);
                     ?>
@@ -213,29 +218,53 @@ if (isset($_GET['id'])) {
                             <div class="card-body">
                                 <?php
                                 //--------------------------------------------------------------------------
-                                if ($bloque_finalizado != 1) {
-                                    ?>
-                                    <button class="btn btn-primary" style="width:30%"
-                                        onclick="subir_archivo('<?php echo $k->dec($bloque['BLOQUE']) ?>')">
-                                        <?php echo "Subir archivo a " . $k->dec($bloque['BLOQUE']); ?>
-                                    </button>
-                                    <br>
-                                    <br>
-                                    <button class="btn btn-primary" style="width:30%; color:white; background-color: #64042C"
-                                        onclick="bloque_finalizado('<?php echo $bloque['BLOQUE'] ?>', '<?php echo $id_proyecto ?>', 1)">Marcar
-                                        como
-                                        finalizado</button>
-                                    <?php
-                                } else {
-                                    //la siguiente opción se habilita solamente cuando el bloque ha sido seleccionado como terminado
-                                    //la siguiente opción es para que el profesor agregue una calificación y retroalimentación al
-                                    //bloque seleccionado del proyecto seleccionado
-                                    if (isset($_SESSION[''])) {
+                                //La siguiente opción sólo está disponible si el bloque no está seleccionado como finalizado
+                                if ($bloque_finalizado == 0) {
+                                    //Las siguientes opciones sólo están disponibles para los alumnos
+                                    if (isset($_SESSION['id_alumno'])) {
+                                        ?>
+                                        <button class="btn btn-primary" style="width:30%"
+                                            onclick="subir_archivo('<?php echo $k->dec($bloque['BLOQUE']) ?>')">
+                                            <?php echo "Subir archivo a " . $k->dec($bloque['BLOQUE']); ?>
+                                        </button>
+                                        <br>
+                                        <br>
+                                        <button class="btn btn-primary" style="width:30%; color:white; background-color: #64042C"
+                                            onclick="bloque_finalizado('<?php echo $bloque['BLOQUE'] ?>', '<?php echo $id_proyecto ?>', 1)">Marcar
+                                            como
+                                            finalizado</button>
+                                        <?php
                                     }
+                                    if (isset($_SESSION['id_profesor'])) {
+                                        ?>
+                                        <p>Este bloque no ha sido marcado como finalizado. Aún no puede ser evaluado</p>
+                                        <?php
+                                    }
+                                } else if ($bloque_finalizado == 1) {
+                                    //La siguiente opción sólo está disponible si el bloque está seleccionado como finalizado
+                                    if (isset($_SESSION['id_profesor'])) {
+                                        //la siguiente opción se habilita solamente cuando el bloque ha sido seleccionado como terminado
+                                        //la siguiente opción es para que el profesor agregue una calificación y retroalimentación al
+                                        //bloque seleccionado del proyecto seleccionado                                        
+                                        ?>
+                                            <input type="hidden" name="id_profesor_calificador" id="id_profesor_calificador"
+                                                value="<?php echo $_SESSION['id_profesor'] ?>">
+                                            <h3>Profesor: Este bloque ha sido marcado como finalizado, esperando calificación</h3>
+                                            <br><br>
+                                            <button class="btn btn-primary" style="width:30%"
+                                                onclick="evaluar_bloque('<?php echo $k->dec($bloque['BLOQUE']) ?>')">
+                                                Agregar evaluación
+                                            </button>
+                                        <?php
+                                    }
+                                } else if ($bloque_finalizado == 2) {
+                                    //La siguiente opción sólo está disponible si el bloque ya está calificado con 100
                                     ?>
-                                    <h3>Este bloque ha sido marcado como finalizado, esperando calificación</h3>
+                                            <h3>Este bloque tiene calificación de 100</h3>
                                     <?php
+
                                 }
+
                                 //--------------------------------------------------------------------------                                
                                 ?>
                                 <br>
@@ -280,13 +309,16 @@ if (isset($_GET['id'])) {
                                                                 archivo</a>
                                                             <br><br>
                                                             <?php
-                                                            if ($bloque_finalizado != 1) {
-                                                                ?>
-                                                                <a href="#" style="width: 100%;" class="btn btn-danger"
-                                                                    onclick="eliminar_archivo('<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>')">Eliminar
-                                                                    archivo</a>
-                                                                <br><br>
-                                                                <?php
+                                                            //Las acciones sólo están disponibles para los alumnos
+                                                            if (isset($_SESSION['id_alumno']) && $bloque_finalizado !=2) {
+                                                                if ($bloque_finalizado != 1) {
+                                                                    ?>
+                                                                    <a href="#" style="width: 100%;" class="btn btn-danger"
+                                                                        onclick="eliminar_archivo('<?php echo $archivo_proyecto['ID_ARCHIVO'] ?>')">Eliminar
+                                                                        archivo</a>
+                                                                    <br><br>
+                                                                    <?php
+                                                                }
                                                             }
                                                             ?>
 
@@ -309,11 +341,29 @@ if (isset($_GET['id'])) {
                                         <thead>
                                             <tr>
                                                 <th scope="col">Calificación profesor</th>
+                                                <th scope="col">Fecha</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <?php
+                                                if (isset($calificacion_bloque_actual)) {
+                                                    ?>
+                                                <tr>
+                                                    <td>
+                                                        <?php echo $calificacion_bloque_actual ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo (isset($fecha_calificacion_bloque)) ? $k->dec($fecha_calificacion_bloque) : '' ?>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                                } else {
+                                                    ?>
                                                 <td>Aún no se ha calificado este bloque</td>
+                                                <?php
+                                                }
+                                                ?>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -322,12 +372,34 @@ if (isset($_GET['id'])) {
                                         <thead>
                                             <tr>
                                                 <th scope="col">Retroalimentación/Comentarios de profesor</th>
+                                                <th>Fecha de comentario</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Sin comentarios</td>
-                                            </tr>
+                                            <?php
+                                            $retroalimentacion = $obj_retroalimentacion->selectAllComentsByIDProyectoAndBloque($id_proyecto, $bloque_comentario_actual);
+                                            if (!empty($retroalimentacion)) {
+                                                foreach ($retroalimentacion as $comentario) {
+                                                    ?>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $k->dec($comentario['COMENTARIO']) ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $k->dec($comentario['FECHA']) ?>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <tr>
+                                                    <td colspan="2">Sin comentarios</td>
+                                                </tr>
+                                                <?php
+                                            }
+                                            ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -382,6 +454,11 @@ if (isset($_GET['id'])) {
     </div>
 </div>
 <script>
+    function evaluar_bloque(bloque) {
+        $("#bloque").val(bloque)
+        $("#modal_calificar_bloque").modal('show')
+        $("#bloque").html("Evaluación para el bloque " + bloque)
+    }
     function eliminar_archivo(id_archivo) {
         Swal.fire({
             title: 'Confirmar eliminación de archivo',
@@ -493,7 +570,6 @@ if (isset($_GET['id'])) {
                 processData: false,  // Evita que jQuery procese los datos
                 contentType: false,  // Evita que jQuery configure el encabezado Content-Type
                 success: function (response) {
-                    console.log(response);
                     if (response.result == 1) {
                         Swal.fire({
                             title: '¡Exito!',
@@ -538,6 +614,80 @@ if (isset($_GET['id'])) {
             }
         })
     }
+
+    function agregar_calificacion() {
+        cal = $("#calificacion").val();
+        com = $("#comentario");
+        id_proyecto = $("#id_proyecto").val();
+        bloque = $("#bloque").val();
+        id_profesor = $("#id_profesor_calificador").val();
+        var data = {
+            cal: cal,
+            id_proyecto: id_proyecto,
+            bloque: bloque,
+        };
+        jQuery.ajax({
+            url: "AJAX/calificaciones/agregar_calificacion_ajax.php",
+            type: "POST",
+            data: data,
+            success: function (returned_data) {
+                if (returned_data != 1) {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: 'No realizado, reintentar en unos minutos',
+                        icon: 'error',
+                    })
+                } else {
+                    if (!($.trim(com.val()) === '')) {
+                        com = $("#comentario").val();
+                        var data = {
+                            id_proyecto: id_proyecto,
+                            id_profesor: id_profesor,
+                            com: com,
+                            bloque: bloque,
+                        };
+                        jQuery.ajax({
+                            url: "AJAX/comentarios/agregar_comentario_ajax.php",
+                            type: "POST",
+                            data: data,
+                            success: function (response) {
+                                if (response == 1) {
+                                    Swal.fire({
+                                        title: '¡Exito!',
+                                        text: 'Calificación agregada',
+                                        icon: 'success',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    });
+                                } else {
+                                    console.log("Se ha encontrado un error al insertar el comentario: \n" + JSON.stringify(response) + "\n" + response);
+                                }
+                            },
+                            error: function (response) {
+                                console.log(JSON.stringify(response));
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Calificación agregada',
+                            icon: 'success',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+
+                }
+            },
+            error: function (response) {
+                console.log("Error encontrado en calificacion: " + response);
+            }
+        })
+    }
 </script>
 <style>
     .container {
@@ -572,3 +722,28 @@ if (isset($_GET['id'])) {
         position: absolute;
     }
 </style>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_calificar_bloque">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bloque"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align:center">
+                <p class="card-text">
+                    <input type="hidden" name="bloque" id="bloque">
+                    CALIFICACIÓN<br><input style="width: 100%;" id="calificacion" name="calificacion" type="text"
+                        placeholder="Agregar un número entero entre 0 y 100"><br><br>
+                    RETROALIMENTACIÓN<br><textarea style="width: 100%;" name="comentario" id="comentario" cols="30"
+                        rows="10"
+                        placeholder="Agregar un comentario sobre el contenido del bloque. Este comentario es opcional"></textarea>
+            </div>
+            <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-primary" onclick="agregar_calificacion()">Aceptar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
