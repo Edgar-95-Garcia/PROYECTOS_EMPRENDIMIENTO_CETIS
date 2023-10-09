@@ -28,7 +28,11 @@ class Borrar_proyecto
                 include_once("../../MODELO/Participante_proyecto/Borrar_participante_proyecto.php");
                 $obj = new Borrar_participante_proyecto();
                 $obj->deleteParticipanteProjectFromId($id_proyecto);
-
+                //se eliminan todos los comentarios del proyecto
+                include_once("../../MODELO/Comentarios/Borrar_comentario.php");
+                $obj = new Borrar_comentario();
+                $obj->deleteComentarioFromIdAJAX($id_proyecto);
+                //------------------------------------------
                 echo json_encode(array('result' => 1));
             } else
                 echo json_encode(array('result' => 0));

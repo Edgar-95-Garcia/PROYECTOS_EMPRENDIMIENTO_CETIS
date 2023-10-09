@@ -21,7 +21,7 @@ class Consultar_calificacion_proyectos
             $result = "";
             require_once("./MODELO/conect.php");
             $c = new conect();
-            $stmt = $c->connect()->prepare("SELECT * FROM calificaciones_proyecto WHERE ID_PROYECTO = '$id_proyecto' ORDER BY BLOQUE ASC");
+            $stmt = $c->connect()->prepare("SELECT * FROM calificaciones_proyecto WHERE ID_PROYECTO = '$id_proyecto' ORDER BY ID ASC");
             $stmt->execute();
             $result = $stmt->fetchAll();
         } catch (PDOException $e) {

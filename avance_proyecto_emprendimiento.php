@@ -4,6 +4,13 @@ $GLOBALS['menu'] = 'PROYECTOS';
 if (!isset($_SESSION)) {
     session_start();
 }
+if (!isset($_SESSION["id_alumno"]) && !isset($_SESSION["admin_cetis"]) && !isset($_SESSION["id_profesor"])) {
+    ?>
+    <script>
+        window.location.replace("index.php");
+    </script>
+    <?php
+}
 if (isset($_GET['id'])) {
     $id_proyecto = $_GET['id'];
     include_once("./cabecera.php");
@@ -38,6 +45,13 @@ if (isset($_GET['id'])) {
     $obj_usuarios = new Consultar_usuario();
 
     $datos_proyecto = $obj_proyectos->selectProjectbyId($id_proyecto);
+    if (empty($datos_proyecto)) {
+        ?>
+        <script>
+            window.location.replace("proyectos_emprendimiento.php");
+        </script>
+        <?php
+    }
     foreach ($datos_proyecto as $proyecto) {
         $id_usuario = $proyecto['ID_USUARIO'];
         $nombre_proyecto = $proyecto['NOMBRE_PROYECTO'];
@@ -216,6 +230,11 @@ if (isset($_GET['id'])) {
                         <div id="<?php echo "collapse" . $bloque['BLOQUE'] ?>" class="collapse"
                             aria-labelledby="<?php echo "heading" . $bloque['BLOQUE'] ?>" data-parent="#accordion">
                             <div class="card-body">
+                                <hr>
+                                <p>
+                                    <i><?php echo $k->dec($bloque['TEXTO']) ?></i>
+                                </p>
+                                <hr>
                                 <?php
                                 //--------------------------------------------------------------------------
                                 //La siguiente opción sólo está disponible si el bloque no está seleccionado como finalizado
@@ -310,7 +329,7 @@ if (isset($_GET['id'])) {
                                                             <br><br>
                                                             <?php
                                                             //Las acciones sólo están disponibles para los alumnos
-                                                            if (isset($_SESSION['id_alumno']) && $bloque_finalizado !=2) {
+                                                            if (isset($_SESSION['id_alumno']) && $bloque_finalizado != 2) {
                                                                 if ($bloque_finalizado != 1) {
                                                                     ?>
                                                                     <a href="#" style="width: 100%;" class="btn btn-danger"
