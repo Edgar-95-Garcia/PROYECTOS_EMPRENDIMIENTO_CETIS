@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_cetis"] = $actual_session;
             $_SESSION["user"] = $actual_session;
             $_SESSION["nombre"] = $consultar->selectNameUserName($matricula);
-            $_SESSION["admin_cetis"] = "cetis";
+            $_SESSION["admin_cetis"] = $consultar->selectUserIDFromCorreo($matricula);
             ?>
                     <script>
                         Swal.fire({

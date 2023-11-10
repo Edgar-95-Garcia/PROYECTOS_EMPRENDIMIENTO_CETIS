@@ -25,7 +25,7 @@ if (isset($_SESSION["admin_cetis"]) == null) {
         <br><br>
     </center>
     <br><br>
-    <center><button data-toggle="modal" data-target="#modal" class="btn btn-primary">Agregar nueva etiqueta</button>
+    <center><button data-toggle="modal" data-target="#modal_etiqueta" class="btn btn-primary">Agregar nueva etiqueta</button>
     </center>
     <br><br>
     <div>
@@ -119,8 +119,8 @@ include_once("./pie.php");
     }
 
     function agregar_etiqueta() {
-        nombre = $("#nombre").val();
-        descripcion = $("#descripcion").val();
+        nombre = $("#nombre_etiqueta").val();
+        descripcion = $("#descripcion_etiqueta").val();
         var data = {
             nombre: nombre,
             descripcion: descripcion,
@@ -155,7 +155,7 @@ include_once("./pie.php");
         })
     }
 </script>
-<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_etiqueta">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -166,10 +166,10 @@ include_once("./pie.php");
             </div>
             <div class="modal-body" style="text-align:center">
                 <p class="card-text">
-                    NOMBRE ETIQUETA<br><input placeholder="Tecnología, Arte, Literatura, etc." id="nombre" name="nombre"
+                    NOMBRE ETIQUETA<br><input placeholder="Tecnología, Arte, Literatura, etc." id="nombre_etiqueta" name="nombre"
                         type="text"> <br><br>
                     DESCRIPCIÓN ETIQUETA <br><textarea placeholder="Agrega una descripción" name="descripcion"
-                        id="descripcion" cols="23" rows="5"></textarea><br><br>
+                        id="descripcion_etiqueta" cols="23" rows="5"></textarea><br><br>
             </div>
             <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
                 <button type="button" class="btn btn-primary" onclick="agregar_etiqueta()">Agregar</button>

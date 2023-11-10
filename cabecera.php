@@ -40,11 +40,14 @@ if (!isset($GLOBALS['menu'])) {
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" />
-
     <!-- /-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- /-->
+    <!-- Calendario -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.css' />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+
 </head>
 
 <body>
@@ -96,11 +99,40 @@ if (!isset($GLOBALS['menu'])) {
                 <li class="nav-item <?php echo ($GLOBALS['menu'] == 'index') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./index.php">Inicio</a>
                 </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'CURSOS') ? 'active' : ''; ?>">
+                <!--  LOS SIGUIENTES ELEMENTOS SE ENCUENTRAN OCULTOS PARA SU FUTURA IMPLEMENTACION -->
+                <!-- <li class="nav-item <?php // echo ($GLOBALS['menu'] == 'CURSOS') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./#">Cursos</a>
                 </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'PROTOTIPO') ? 'active' : ''; ?>">
+                <li class="nav-item <?php // echo ($GLOBALS['menu'] == 'PROTOTIPO') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./#">Prototipos</a>
+                </li> -->
+                <!--  FIN DE ELEMENTOS OCULTOS-->
+                <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'EVENTOS') ? 'active' : ''; ?>">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Eventos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" aling="center" href="eventos.php">
+                            Explorar eventos</a>
+
+                        <?php
+                        if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
+                            ?>
+                            <a class="dropdown-item" aling="center" href="./admon_eventos.php">
+                                Administrar eventos</a>
+                            <?php
+                        }
+                        if (isset($_SESSION['admin_cetis']) || isset($_SESSION['id_profesor'])) {
+                            ?>
+                            <a class="dropdown-item" aling="center" href="" data-toggle="modal"
+                                data-target="#modal_eventos">
+                                Crear nuevo evento</a>
+                            <?php
+                        }
+                        ?>
+                    </div>
                 </li>
                 <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -219,7 +251,102 @@ if (!isset($GLOBALS['menu'])) {
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_eventos">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear nuevo evento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <p class="card-text">
+                        NOMBRE DEL EVENTO<br><input id="nombre_evento" name="nombre_evento" type="text"> <br><br>
+                        DESCRIPCIÓN DEL EVENTO<br><textarea id="descripcion_evento" name="descripcion_evento" cols="23"
+                            rows="5"></textarea><br><br>
+                        FECHA DE INICIO DEL EVENTO<br><input type="date" name="inicio_evento"                        
+                            id="inicio_evento"><br><br>                            
+                        FECHA DE FIN DEL EVENTO<br><input type="date" name="fin_evento" id="fin_evento"><br><br>
+                </div>
+                <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
+                    <button type="button" class="btn btn-primary"
+                        onclick="registrar_evento('<?php echo obtener_id() ?>')">Aceptar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+    function obtener_id()
+    {
+        if (isset($_SESSION['admin_cetis'])) {
+            return $_SESSION['admin_cetis'];
+        } else if (isset($_SESSION['id_profesor'])) {
+            return $_SESSION['id_profesor'];
+        } else {
+            return $_SESSION['id_alumno'];
+        }
+    }
+    ?>
     <script>
+        function registrar_evento(id_usuario) {
+            nombre = $("#nombre_evento").val();
+            inicio = $("#inicio_evento").val();
+            fin = $("#fin_evento").val();
+            descripcion = $("#descripcion_evento").val();
+
+            var data = {
+                id_usuario: id_usuario,
+                nombre: nombre,
+                inicio: inicio,
+                fin: fin,
+                descripcion: descripcion,
+            };
+
+            jQuery.ajax({
+                url: "AJAX/eventos/registrar_evento_ajax.php",
+                type: "POST",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == 1) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Registro exitoso',
+                            icon: 'success',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    } else if (data.result == 2) {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: 'No realizado, rellenar los campos solicitados',
+                            icon: 'error',
+                        })
+                    } else if (data.result == 3) {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: 'No realizado, revisar las fechas ingresadas',
+                            icon: 'error',
+                        })
+                    } else {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: 'No realizado, reintente en unos minutos',
+                            icon: 'error',
+                        })
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            })
+        }
+
         function registrar_proyecto() {
             nombre = $("#nombre_registro").val();
             descripcion = $("#descripcion_registro").val();
@@ -275,7 +402,7 @@ if (!isset($GLOBALS['menu'])) {
                 width: 300px;
                 height: 100px;
             }
-            
+
             .img_media_2 {
                 background-color: white;
                 position: relative;
@@ -291,7 +418,7 @@ if (!isset($GLOBALS['menu'])) {
                 width: 150px;
                 height: 60px;
             }
-            
+
             .img_media_2 {
                 background-color: white;
                 width: 150px;
