@@ -232,7 +232,9 @@ if (isset($_GET['id'])) {
                             <div class="card-body">
                                 <hr>
                                 <p>
-                                    <i><?php echo $k->dec($bloque['TEXTO']) ?></i>
+                                    <i>
+                                        <?php echo $k->dec($bloque['TEXTO']) ?>
+                                    </i>
                                 </p>
                                 <hr>
                                 <?php
@@ -289,6 +291,7 @@ if (isset($_GET['id'])) {
                                 <br>
                                 <input class="invisible" type="file" name="upload_file" id="upload_file"
                                     accept=".zip,.rar,.pdf">
+                                <input class="invisible" type="file" name="upload_file_2" id="upload_file_2" accept=".pdf">
                                 <br>
                                 <div class="" style="width: 50%">
                                     <table class="table table-bordered table-hover table-responsive">
@@ -521,53 +524,101 @@ if (isset($_GET['id'])) {
         });
     }
     function bloque_finalizado(bloque, id_proyecto, opcion) {
-        Swal.fire({
-            title: 'Si seleccionas el bloque como finalizado no podrás eliminar ni subir nuevos archivos. ¿Continuar? ',
-            showDenyButton: true,
-            confirmButtonText: 'Confirmar',
-            denyButtonText: `Cancelar`,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var data = {
-                    bloque: bloque,
-                    id_proyecto: id_proyecto,
-                    opcion: opcion,
-                };
-                $.ajax({
-                    url: 'AJAX/calificaciones/confirmar_calificacion.php',
-                    type: 'POST',
-                    data: data,
-                    success: function (response) {
-                        console.log(response);
-                        if (response == 1) {
-                            Swal.fire({
-                                title: '¡Exito!',
-                                text: 'El bloque ha sido seleccionado como finalizado',
-                                icon: 'success',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
+        var data = {
+            bloque: bloque,
+            id_proyecto: id_proyecto,
+        };
+        $.ajax({
+            url: 'AJAX/bitacora/consultar_bitacora_ajax.php',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response != 1) {
+                    Swal.fire({
+                        title: '¡Aviso!, Primero se debe agregar el archivo de bitacora para el bloque',
+                        confirmButtonText: 'Cargar archivo',
+                        denyButtonText: 'Cancelar',
+                        showDenyButton: true,
+                        didOpen: () => {
+                            const btnPdf1 = Swal.getPopup().querySelector('#btnPdf1');
+                            const btnPdf2 = Swal.getPopup().querySelector('#btnPdf2');
+                            btnPdf1.addEventListener('click', function () {
+                                // Código para el botón PDF 1
+                                window.open('Static/PDF/Bitacora_ejemplo_1.pdf', '_blank');
+                            });
+                            btnPdf2.addEventListener('click', function () {
+                                // Código para el botón PDF 2
+                                window.open('Static/PDF/Bitacora_ejemplo_2.pdf', '_blank');
+                            });
+                        },
+                        html:
+                            '<button id="btnPdf1" class="btn btn-secondary">Bitacora de muestra 1</button>' +
+                            '<br><br>' +
+                            '<button id="btnPdf2" class="btn btn-secondary">Bitacora de muestra 2</button>',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            subir_archivo_2(bloque);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Si seleccionas el bloque como finalizado no podrás eliminar ni subir nuevos archivos. ¿Continuar? ',
+                        showDenyButton: true,
+                        confirmButtonText: 'Confirmar',
+                        denyButtonText: `Cancelar`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var data = {
+                                bloque: bloque,
+                                id_proyecto: id_proyecto,
+                                opcion: opcion,
+                            };
+                            $.ajax({
+                                url: 'AJAX/calificaciones/confirmar_calificacion.php',
+                                type: 'POST',
+                                data: data,
+                                success: function (response) {
+                                    console.log(response);
+                                    if (response == 1) {
+                                        Swal.fire({
+                                            title: '¡Exito!',
+                                            text: 'El bloque ha sido seleccionado como finalizado',
+                                            icon: 'success',
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.reload();
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: '¡Error!',
+                                            text: 'Reintente en unos minutos',
+                                            icon: 'error',
+                                        })
+                                    }
+                                },
+                                error: function (error) {
+
                                 }
                             });
-                        } else {
-                            Swal.fire({
-                                title: '¡Error!',
-                                text: 'Reintente en unos minutos',
-                                icon: 'error',
-                            })
                         }
-                    },
-                    error: function (error) {
+                    });
+                }
+            },
+            error: function (error) {
 
-                    }
-                });
             }
         });
+
+
     }
+
     function subir_archivo(bloque) {
         bloqueVal = bloque;
         $("#upload_file").click();
     }
+
     $("#upload_file").on("change", function () {
         const selectedFile = this.files[0];
         if (selectedFile) {
@@ -615,6 +666,56 @@ if (isset($_GET['id'])) {
             });
         }
     });
+
+    function subir_archivo_2(bloque) {
+        bloqueVal = bloque;
+        $("#upload_file_2").click();
+    }
+
+    $("#upload_file_2").on("change", function () {
+        const selectedFile = this.files[0];
+        if (selectedFile) {
+            id = $("#id_proyecto").val();
+            // Obtener el nombre del archivo
+            const fileName = selectedFile.name;
+            // Creamos un objeto FormData para enviar el archivo
+            const formData = new FormData();
+            formData.append('archivo', selectedFile);
+            formData.append('id', id);
+            formData.append('nombre', fileName);
+            formData.append('bloque', bloqueVal);//Necesito que se pase la información del bloque aquí
+            // Realizamos una llamada AJAX para enviar el archivo al servidor
+            $.ajax({
+                url: 'AJAX/bitacora/registrar_bitacora_ajax.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                processData: false,  // Evita que jQuery procese los datos
+                contentType: false,  // Evita que jQuery configure el encabezado Content-Type
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Bitacora agregada',
+                            icon: 'success',
+                        })
+                    } else {
+                        Swal.fire({
+                            title: '¡Error!',
+                            text: 'No realizado, reintentar en unos minutos',
+                            icon: 'error',
+                        })
+                    }
+                },
+                error: function (error) {
+                    // Manejar errores si ocurren
+                    console.error(error);
+                }
+            });
+        }
+    });
+
+
 
     function descargar_archivo(id_archivo) {
         var data = {
