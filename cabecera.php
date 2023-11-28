@@ -142,7 +142,7 @@ if (!isset($GLOBALS['menu'])) {
                         <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php">
                             Emprendimiento
                         </a>
-                        <a class="dropdown-item" aling="center" href="#">
+                        <a class="dropdown-item" aling="center" href="./proyectos_prototipos.php">
                             Prototipos
                         </a>
                         <?php if (isset($_SESSION['id_alumno']) || isset($_SESSION['id_profesor'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
