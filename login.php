@@ -24,9 +24,9 @@ if (isset($_SESSION['user']) != null) {
                         <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST"
                             enctype="multipart/form-data">
                             <p class="card-text">
-                                <br><br><input class="input_media" name="c_u" type="text" placeholder="Matricula o correo">
+                                <br><br><input class="input_media" name="c_u" type="text" placeholder="Matricula o correo" value="CETIS_2023">
                                 <br>
-                                <br><br><input class="input_media" name="con" type="password" placeholder="Contraseña">
+                                <br><br><input class="input_media" name="con" type="password" placeholder="Contraseña" value="CETIS_2023">
                                 <br><br>
                                 <br><br>
                                 <?php include_once("./CONTROLADOR/usuarios/ingreso_usuarios.php"); ?>

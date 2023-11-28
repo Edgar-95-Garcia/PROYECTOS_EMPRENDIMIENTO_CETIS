@@ -94,9 +94,6 @@ if (!isset($GLOBALS['menu'])) {
         <div class="collapse navbar-collapse" id="colNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" aling="center" href="http://www.dgeti.sep.gob.mx/">DGETI</a>
-                </li>
-                <li class="nav-item <?php echo ($GLOBALS['menu'] == 'index') ? 'active' : ''; ?>">
                     <a class="nav-link" aling="center" href="./index.php">Inicio</a>
                 </li>
                 <!--  LOS SIGUIENTES ELEMENTOS SE ENCUENTRAN OCULTOS PARA SU FUTURA IMPLEMENTACION -->
@@ -116,6 +113,8 @@ if (!isset($GLOBALS['menu'])) {
 
                         <a class="dropdown-item" aling="center" href="eventos.php">
                             Explorar eventos</a>
+                        <a class="dropdown-item" aling="center" href="#">
+                            Convocatorias</a>
 
                         <?php
                         if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
@@ -137,17 +136,21 @@ if (!isset($GLOBALS['menu'])) {
                 <li class="nav-item dropdown <?php echo ($GLOBALS['menu'] == 'PROYECTOS') ? 'active' : ''; ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        Proyectos de emprendimiento
+                        Proyectos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php">
+                            Emprendimiento
+                        </a>
+                        <a class="dropdown-item" aling="center" href="#">
+                            Prototipos
+                        </a>
                         <?php if (isset($_SESSION['id_alumno']) || isset($_SESSION['id_profesor'])) { //Esta opción se habilita siempre y cuando el usuario ingrese correctamente
                                 ?>
                             <a class="dropdown-item" aling="center" href="./portafolio_proyectos_emprendimiento.php"> Mis
                                 proyectos</a>
                             <?php
                             } ?>
-                        <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento.php"> Explorar
-                            proyectos</a>
                         <?php if (isset($_SESSION['admin_cetis'])) { //Esta opción se habilita siempre y cuando el usuario sea de tipo administrador
                                 ?>
                             <a class="dropdown-item" aling="center" href="./proyectos_emprendimiento_etiquetas.php">
@@ -266,8 +269,8 @@ if (!isset($GLOBALS['menu'])) {
                         NOMBRE DEL EVENTO<br><input id="nombre_evento" name="nombre_evento" type="text"> <br><br>
                         DESCRIPCIÓN DEL EVENTO<br><textarea id="descripcion_evento" name="descripcion_evento" cols="23"
                             rows="5"></textarea><br><br>
-                        FECHA DE INICIO DEL EVENTO<br><input type="date" name="inicio_evento"                        
-                            id="inicio_evento"><br><br>                            
+                        FECHA DE INICIO DEL EVENTO<br><input type="date" name="inicio_evento"
+                            id="inicio_evento"><br><br>
                         FECHA DE FIN DEL EVENTO<br><input type="date" name="fin_evento" id="fin_evento"><br><br>
                 </div>
                 <div class="modal-footer" style="display: flex; align-items: center; justify-content: center;">
@@ -281,6 +284,9 @@ if (!isset($GLOBALS['menu'])) {
     <?php
     function obtener_id()
     {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         if (isset($_SESSION['admin_cetis'])) {
             return $_SESSION['admin_cetis'];
         } else if (isset($_SESSION['id_profesor'])) {

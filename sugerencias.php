@@ -6,6 +6,9 @@ if (!isset($_SESSION)) {
 }
 
 include_once("./cabecera.php");
+
+if (isset($_SESSION['id_alumno']) || isset($_SESSION['id_profesor'])) {
+
 ?>
 <center>
     <br><br>
@@ -35,8 +38,15 @@ include_once("./cabecera.php");
 <br><br>
 </div>
 <?php
-include_once("./pie.php");
 
+include_once("./pie.php");
+}else{
+    ?>
+    <script>
+        window.location.replace("login.php");
+    </script>
+    <?php
+}
 ?>
 <style>
     @media (orientation: landscape) {

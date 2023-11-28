@@ -20,7 +20,7 @@ if (isset($datos_apariencia) && $datos_apariencia != false) {
     <br>
     <center>        
         <p><a href="sugerencias.php" style="color:white">Da click aquí para envíar una sugerencia</a></p>
-        <p>Dirección: Av Estanislao Ramírez Ruiz, Amp. Selene, Tláhuac, 13420 Ciudad de México, CDMX</p>
+        <p>Dirección: Av Estanislao Ramírez Ruíz, Amp. Selene, Tláhuac, 13420, Ciudad de México, CDMX.</p>
     </center>
     <br>
 </footer>
